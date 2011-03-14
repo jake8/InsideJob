@@ -201,7 +201,8 @@
 
 - (IBAction)reloadWorldInformation:(id)sender
 {	
-	[self loadWorldAtPath:loadedWorldPath];
+	if (loadedWorldPath != nil && ![loadedWorldPath isEqualToString:@""])
+		[self loadWorldAtPath:loadedWorldPath];
 }
 
 - (void)saveWorld
