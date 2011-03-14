@@ -236,16 +236,7 @@
 				66BC00021260215C005A23F4 /* IJInventoryView.m */,
 				66BC03601260D095005A23F4 /* IJItemPropertiesViewController.h */,
 				66BC03611260D095005A23F4 /* IJItemPropertiesViewController.m */,
-				AEE84E6A132DD3710022DD50 /* KBLabel.h */,
-				AEE84E6B132DD3710022DD50 /* KBLabel.m */,
-				AEE84E6C132DD3710022DD50 /* KBScroller.h */,
-				AEE84E6D132DD3710022DD50 /* KBScroller.m */,
-				AEE84E6E132DD3710022DD50 /* KBScrollView.h */,
-				AEE84E6F132DD3710022DD50 /* KBScrollView.m */,
-				AEE84E70132DD3710022DD50 /* KBSearchField.h */,
-				AEE84E71132DD3710022DD50 /* KBSearchField.m */,
-				AEE84E72132DD3710022DD50 /* KBSearchFieldCell.h */,
-				AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */,
+				AE7F2B08132E8F2300E62D3E /* UI */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -270,6 +261,23 @@
 				66BCFC35125EA53E005A23F4 /* InsideJob.icns */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		AE7F2B08132E8F2300E62D3E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				AEE84E6A132DD3710022DD50 /* KBLabel.h */,
+				AEE84E6B132DD3710022DD50 /* KBLabel.m */,
+				AEE84E6C132DD3710022DD50 /* KBScroller.h */,
+				AEE84E6D132DD3710022DD50 /* KBScroller.m */,
+				AEE84E6E132DD3710022DD50 /* KBScrollView.h */,
+				AEE84E6F132DD3710022DD50 /* KBScrollView.m */,
+				AEE84E70132DD3710022DD50 /* KBSearchField.h */,
+				AEE84E71132DD3710022DD50 /* KBSearchField.m */,
+				AEE84E72132DD3710022DD50 /* KBSearchFieldCell.h */,
+				AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		AEE84E7C132DD38F0022DD50 /* Safari TextField */ = {

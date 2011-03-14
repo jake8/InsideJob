@@ -15,7 +15,6 @@
 {
 	self = [super initWithCoder:decoder];
 	if (self != nil) {
-		NSLog(@"SearchField init");
 		[self setFrameSize:NSMakeSize([self frame].size.width, [self frame].size.height+1)];
 		[self setFrameOrigin:NSMakePoint([self frame].origin.x, [self frame].origin.y-1)];
 	}

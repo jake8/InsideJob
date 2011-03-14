@@ -54,6 +54,7 @@
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
 	
 	[editorView setHidden:YES];
+	[self.window setShowsResizeIndicator:NO];
 }
 
 - (void)dealloc
@@ -144,7 +145,7 @@
 	{
 		// Error loading 
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"InsideJob was unable to load the level at %@.", levelPath);
+															@"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
 		return;
 	}
 	
@@ -241,7 +242,7 @@
 		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to remove the prior backup of this level file:\n%@", [error localizedDescription]);
+																@"Inside Job was unable to remove the prior backup of this level file.", [error localizedDescription]);
 			return;
 		}
 	}
@@ -251,7 +252,7 @@
 	if (success != YES) {
 		NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
 		NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable to create a backup of the existing level file:\n%@", [error localizedDescription]);
+															@"Inside Job was unable to create a backup of the existing level file.", [error localizedDescription]);
 		return;
 	}
 	
@@ -266,10 +267,10 @@
 		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [restoreError localizedDescription]);
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to save to the existing level file, and the backup could not be restored.\n%@\n%@", [error localizedDescription], [restoreError localizedDescription]);
+																@"Inside Job was unable to save to the existing level file, and the backup could not be restored.", [error localizedDescription], [restoreError localizedDescription]);
 		} else {
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to save to the existing level file, and the backup was successfully restored.\n%@", [error localizedDescription]);
+																@"Inside Job was unable to save to the existing level file, and the backup was successfully restored.", [error localizedDescription]);
 		}
 		return;
 	}
