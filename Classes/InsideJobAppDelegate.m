@@ -14,8 +14,9 @@
 @synthesize inventoryWindowController;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[inventoryWindowController worldSelectionChanged:nil];
+	[inventoryWindowController.statusTextField setStringValue:@"No world loaded!"];
 }
+
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
 	BOOL shouldClose = [inventoryWindowController windowShouldClose:nil];

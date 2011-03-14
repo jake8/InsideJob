@@ -15,20 +15,23 @@
 
 @interface IJInventoryWindowController ()
 - (void)saveWorld;
-- (void)loadWorldAtIndex:(int)worldIndex;
+- (void)loadWorldAtPath:(NSString *)path;
 - (BOOL)isDocumentEdited;
 @end
 
 @implementation IJInventoryWindowController
 
-@synthesize worldSelectionControl;
 @synthesize statusTextField;
 @synthesize inventoryView, armorView, quickView;
 @synthesize itemSearchField, itemTableView;
+@synthesize editorView;
 
 
 - (void)awakeFromNib
 {
+	loadedWorldPath = [[NSString alloc] init];
+	attemptedLoadWorldPath = [[NSString alloc] init];
+	
 	armorInventory = [[NSMutableArray alloc] init];
 	quickInventory = [[NSMutableArray alloc] init];
 	normalInventory = [[NSMutableArray alloc] init];
@@ -49,10 +52,14 @@
 	
 	[itemTableView setTarget:self];
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
+	
+	[editorView setHidden:YES];
 }
 
 - (void)dealloc
 {
+	[loadedWorldPath release];
+	[attemptedLoadWorldPath release];
 	[propertiesViewController release];
 	[armorInventory release];
 	[quickInventory release];
@@ -67,31 +74,35 @@
 #pragma mark World Selection
 
 - (void)dirtyLoadSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
-{
-	if (returnCode == NSAlertOtherReturn) // Cancel
-	{
-		[worldSelectionControl setSelectedSegment:loadedWorldIndex-1];
-		return;
-	}
-	
+{	
 	if (returnCode == NSAlertDefaultReturn) // Save
 	{
 		[self saveWorld];
-		[self loadWorldAtIndex:attemptedLoadWorldIndex];
+		[self loadWorldAtPath:attemptedLoadWorldPath];
 	}
 	else if (returnCode == NSAlertAlternateReturn) // Don't save
 	{
 		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
-		[self loadWorldAtIndex:attemptedLoadWorldIndex];
+		[self loadWorldAtPath:attemptedLoadWorldPath];
 	}
 }
 
-- (void)loadWorldAtIndex:(int)worldIndex
+- (void)sessionLockAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
+{	
+	[self setDocumentEdited:NO];
+	[self loadWorldAtPath:loadedWorldPath];
+}
+
+- (void)loadWorldAtPath:(NSString *)worldPath;
 {
+	NSString *levelPath = [worldPath stringByExpandingTildeInPath];
+	
 	if ([self isDocumentEdited])
 	{
-		attemptedLoadWorldIndex = worldIndex;
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyLoadSheetDidEnd:returnCode:contextInfo:), nil, nil, @"Your changes will be lost if you do not save them.");
+		[attemptedLoadWorldPath release];
+		attemptedLoadWorldPath = [levelPath copy];
+		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyLoadSheetDidEnd:returnCode:contextInfo:), nil, nil, 
+																	 @"Your changes will be lost if you do not save them.");
 		return;
 	}
 	
@@ -112,27 +123,28 @@
 	
 	statusTextField.stringValue = @"No world loaded.";
 	
-	if (![IJMinecraftLevel worldExistsAtIndex:worldIndex])
+	if (![IJMinecraftLevel worldExistsAtPath:levelPath])
 	{
-		NSBeginCriticalAlertSheet(@"No world exists in that slot.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Please create a new single player world in this slot using Minecraft and try again.");
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"Inside Job was unable to locate the level.dat file.");
 		return;
 	}
 	
-	sessionLockValue = [IJMinecraftLevel writeToSessionLockAtIndex:worldIndex];
-	if (![IJMinecraftLevel checkSessionLockAtIndex:worldIndex value:sessionLockValue])
+		
+	sessionLockValue = [IJMinecraftLevel writeToSessionLockAtPath:levelPath];
+	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue])
 	{
-		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Inside Job was unable obtain the session lock.");
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"Inside Job was unable obtain the session lock.");
 		return;
 	}
 	
-	NSString *levelPath = [IJMinecraftLevel pathForLevelDatAtIndex:worldIndex];
-	
-	NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:levelPath]];
-	
+	NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[IJMinecraftLevel levelDataPathForWorld:levelPath]]];	
 	if (!fileData)
 	{
 		// Error loading 
-		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"InsideJob was unable to load the level at %@.", levelPath);
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"InsideJob was unable to load the level at %@.", levelPath);
 		return;
 	}
 	
@@ -144,7 +156,6 @@
 	[self didChangeValueForKey:@"worldTime"];
 	
 	// Add placeholder inventory items:
-	
 	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++)
 		[quickInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotQuickFirst + i]];
 	
@@ -182,29 +193,32 @@
 	
 	[self setDocumentEdited:NO];
 	statusTextField.stringValue = @"";
-	loadedWorldIndex = worldIndex;
+
+	[loadedWorldPath release];
+	loadedWorldPath = [levelPath copy];
+	[editorView setHidden:NO];
+}
+
+- (IBAction)reloadWorldInformation:(id)sender
+{	
+	[self loadWorldAtPath:loadedWorldPath];
 }
 
 - (void)saveWorld
 {
-	int worldIndex = loadedWorldIndex;
+	NSString *levelPath = loadedWorldPath;
 	if (inventory == nil)
 		return; // no world loaded, nothing to save
 	
-	if (![IJMinecraftLevel checkSessionLockAtIndex:worldIndex value:sessionLockValue])
-	{
-		NSBeginCriticalAlertSheet(@"Another application has modified this world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"The session lock was changed by another application.");
+	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue]) {
+		NSBeginCriticalAlertSheet(@"Another application has modified this world.", @"Reload", nil, nil, self.window, self, @selector(sessionLockAlertSheetDidEnd:returnCode:contextInfo:), nil, nil, 
+															@"The session lock was changed by another application.");
 		return;
 	}
-	
-	NSString *levelPath = [IJMinecraftLevel pathForLevelDatAtIndex:worldIndex];
-	
+		
 	NSMutableArray *newInventory = [NSMutableArray array];
-	
-	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil])
-	{
-		for (IJInventoryItem *item in items)
-		{
+	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil]) {
+		for (IJInventoryItem *item in items) {
 			if (item.count > 0 && item.itemId > 0)
 				[newInventory addObject:item];
 		}
@@ -212,54 +226,55 @@
 	
 	[level setInventory:newInventory];
 	
-	NSString *backupPath = [levelPath stringByAppendingPathExtension:@"insidejobbackup"];
+	NSString *dataPath = [IJMinecraftLevel levelDataPathForWorld:levelPath];
+	NSString *backupPath = [dataPath stringByAppendingPathExtension:@"insidejobbackup"];
 	
 	BOOL success = NO;
 	NSError *error = nil;
 	
 	// Remove a previously-created .insidejobbackup, if it exists:
-	if ([[NSFileManager defaultManager] fileExistsAtPath:backupPath])
-	{
+	
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:backupPath]) {
 		success = [[NSFileManager defaultManager] removeItemAtPath:backupPath error:&error];
-		if (!success)
-		{
+		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
-			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Inside Job was unable to remove the prior backup of this level file:\n%@", [error localizedDescription]);
+			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+																@"Inside Job was unable to remove the prior backup of this level file:\n%@", [error localizedDescription]);
 			return;
 		}
 	}
 	
 	// Create the backup:
-	success = [[NSFileManager defaultManager] copyItemAtPath:levelPath toPath:backupPath error:&error];
-	if (!success)
-	{
+	success = [[NSFileManager defaultManager] copyItemAtPath:dataPath toPath:backupPath error:&error];
+	if (success != YES) {
 		NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
-		NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Inside Job was unable to create a backup of the existing level file:\n%@", [error localizedDescription]);
+		NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"Inside Job was unable to create a backup of the existing level file:\n%@", [error localizedDescription]);
 		return;
 	}
 	
+	
 	// Write the new level.dat out:
-	success = [[level writeData] writeToURL:[NSURL fileURLWithPath:levelPath] options:0 error:&error];
-	if (!success)
-	{
+	success = [[level writeData] writeToURL:[NSURL fileURLWithPath:dataPath] options:0 error:&error];
+	if (success != YES) {
 		NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
 		
 		NSError *restoreError = nil;
-		success = [[NSFileManager defaultManager] copyItemAtPath:backupPath toPath:levelPath error:&restoreError];
-		if (!success)
-		{
+		success = [[NSFileManager defaultManager] copyItemAtPath:backupPath toPath:dataPath error:&restoreError];
+		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [restoreError localizedDescription]);
-			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Inside Job was unable to save to the existing level file, and the backup could not be restored.\n%@\n%@", [error localizedDescription], [restoreError localizedDescription]);
-		}
-		else
-		{
-			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, @"Inside Job was unable to save to the existing level file, and the backup was successfully restored.\n%@", [error localizedDescription]);
+			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+																@"Inside Job was unable to save to the existing level file, and the backup could not be restored.\n%@\n%@", [error localizedDescription], [restoreError localizedDescription]);
+		} else {
+			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+																@"Inside Job was unable to save to the existing level file, and the backup was successfully restored.\n%@", [error localizedDescription]);
 		}
 		return;
 	}
 	
 	[self setDocumentEdited:NO];
-	statusTextField.stringValue = @"Saved.";
+	statusTextField.stringValue = @"World saved.";
 }
 
 - (void)setDocumentEdited:(BOOL)edited
@@ -277,17 +292,23 @@
 #pragma mark -
 #pragma mark Actions
 
-- (IBAction)menuSelectWorld:(id)sender
+- (IBAction)openWorld:(id)sender
 {
-	int worldIndex = [sender tag];
-	[self loadWorldAtIndex:worldIndex];
-	[worldSelectionControl setSelectedSegment:worldIndex - 1];
-}
-
-- (IBAction)worldSelectionChanged:(id)sender
-{
-	int worldIndex = [worldSelectionControl selectedSegment] + 1;
-	[self loadWorldAtIndex:worldIndex];
+	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+	
+	// set up new attributes //
+	[openPanel setCanChooseDirectories:YES];
+	[openPanel setCanChooseFiles:NO];
+	[openPanel setAllowsMultipleSelection:NO];
+	[openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath]]];
+	
+	// display the NSSavePanel //
+	[openPanel beginWithCompletionHandler:^(NSInteger runResult){
+		if (runResult == NSFileHandlingPanelOKButton) {
+			NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
+			[self loadWorldAtPath:filePath];
+		}
+	}];
 }
 
 - (void)saveDocument:(id)sender
@@ -329,6 +350,7 @@
 	[self didChangeValueForKey:@"worldTime"];
 	[self setDocumentEdited:YES];
 }
+
 
 #pragma mark -
 #pragma mark IJInventoryViewDelegate
@@ -594,7 +616,8 @@
 	if ([self isDocumentEdited])
 	{
 		// Note: We use the didDismiss selector becuase the sheet needs to be closed in order for performClose: to work.
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, @"Your changes will be lost if you do not save them.");
+		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, 
+																	 @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
 	return YES;
@@ -620,7 +643,7 @@
 		}
 		return YES;
 	}
-	return YES;
+	return NO;
 }
 
 

@@ -30,6 +30,17 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		AEE84E74132DD3710022DD50 /* KBLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6B132DD3710022DD50 /* KBLabel.m */; };
+		AEE84E75132DD3710022DD50 /* KBScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6D132DD3710022DD50 /* KBScroller.m */; };
+		AEE84E76132DD3710022DD50 /* KBScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6F132DD3710022DD50 /* KBScrollView.m */; };
+		AEE84E77132DD3710022DD50 /* KBSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E71132DD3710022DD50 /* KBSearchField.m */; };
+		AEE84E78132DD3710022DD50 /* KBSearchFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */; };
+		AEE84E83132DD38F0022DD50 /* KBSTextFieldCF.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */; };
+		AEE84E84132DD38F0022DD50 /* KBSTextFieldCF_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */; };
+		AEE84E85132DD38F0022DD50 /* KBSTextFieldLC.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */; };
+		AEE84E86132DD38F0022DD50 /* KBSTextFieldLC_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */; };
+		AEE84E87132DD38F0022DD50 /* KBSTextFieldRC.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */; };
+		AEE84E88132DD38F0022DD50 /* KBSTextFieldRC_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +85,22 @@
 		66BCFE61125FCEC6005A23F4 /* DataValuesV110Transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DataValuesV110Transparent.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* InsideJob-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "InsideJob-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Inside Job.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Inside Job.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEE84E6A132DD3710022DD50 /* KBLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBLabel.h; sourceTree = "<group>"; };
+		AEE84E6B132DD3710022DD50 /* KBLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBLabel.m; sourceTree = "<group>"; };
+		AEE84E6C132DD3710022DD50 /* KBScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBScroller.h; sourceTree = "<group>"; };
+		AEE84E6D132DD3710022DD50 /* KBScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBScroller.m; sourceTree = "<group>"; };
+		AEE84E6E132DD3710022DD50 /* KBScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBScrollView.h; sourceTree = "<group>"; };
+		AEE84E6F132DD3710022DD50 /* KBScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBScrollView.m; sourceTree = "<group>"; };
+		AEE84E70132DD3710022DD50 /* KBSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBSearchField.h; sourceTree = "<group>"; };
+		AEE84E71132DD3710022DD50 /* KBSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBSearchField.m; sourceTree = "<group>"; };
+		AEE84E72132DD3710022DD50 /* KBSearchFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBSearchFieldCell.h; sourceTree = "<group>"; };
+		AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBSearchFieldCell.m; sourceTree = "<group>"; };
+		AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldCF.png; sourceTree = "<group>"; };
+		AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldCF_disabled.png; sourceTree = "<group>"; };
+		AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldLC.png; sourceTree = "<group>"; };
+		AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldLC_disabled.png; sourceTree = "<group>"; };
+		AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldRC.png; sourceTree = "<group>"; };
+		AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldRC_disabled.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +236,16 @@
 				66BC00021260215C005A23F4 /* IJInventoryView.m */,
 				66BC03601260D095005A23F4 /* IJItemPropertiesViewController.h */,
 				66BC03611260D095005A23F4 /* IJItemPropertiesViewController.m */,
+				AEE84E6A132DD3710022DD50 /* KBLabel.h */,
+				AEE84E6B132DD3710022DD50 /* KBLabel.m */,
+				AEE84E6C132DD3710022DD50 /* KBScroller.h */,
+				AEE84E6D132DD3710022DD50 /* KBScroller.m */,
+				AEE84E6E132DD3710022DD50 /* KBScrollView.h */,
+				AEE84E6F132DD3710022DD50 /* KBScrollView.m */,
+				AEE84E70132DD3710022DD50 /* KBSearchField.h */,
+				AEE84E71132DD3710022DD50 /* KBSearchField.m */,
+				AEE84E72132DD3710022DD50 /* KBSearchFieldCell.h */,
+				AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -227,11 +264,25 @@
 		66BC07711262823E005A23F4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				AEE84E7C132DD38F0022DD50 /* Safari TextField */,
 				663803B1131769E90015CFAD /* blockNotFound.png */,
 				66BCFE61125FCEC6005A23F4 /* DataValuesV110Transparent.png */,
 				66BCFC35125EA53E005A23F4 /* InsideJob.icns */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		AEE84E7C132DD38F0022DD50 /* Safari TextField */ = {
+			isa = PBXGroup;
+			children = (
+				AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */,
+				AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */,
+				AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */,
+				AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */,
+				AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */,
+				AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */,
+			);
+			path = "Safari TextField";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,7 +316,6 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "InsideJob" */;
 			compatibilityVersion = "Xcode 3.1";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -295,6 +345,12 @@
 				66BCFE62125FCEC6005A23F4 /* DataValuesV110Transparent.png in Resources */,
 				66BC077312628257005A23F4 /* ItemPropertiesView.xib in Resources */,
 				663803B2131769E90015CFAD /* blockNotFound.png in Resources */,
+				AEE84E83132DD38F0022DD50 /* KBSTextFieldCF.png in Resources */,
+				AEE84E84132DD38F0022DD50 /* KBSTextFieldCF_disabled.png in Resources */,
+				AEE84E85132DD38F0022DD50 /* KBSTextFieldLC.png in Resources */,
+				AEE84E86132DD38F0022DD50 /* KBSTextFieldLC_disabled.png in Resources */,
+				AEE84E87132DD38F0022DD50 /* KBSTextFieldRC.png in Resources */,
+				AEE84E88132DD38F0022DD50 /* KBSTextFieldRC_disabled.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +373,11 @@
 				66BC03621260D095005A23F4 /* IJItemPropertiesViewController.m in Sources */,
 				66BC04F812619072005A23F4 /* NSColor+Additions.m in Sources */,
 				6697AD7212B86762001890C6 /* IJTableView.m in Sources */,
+				AEE84E74132DD3710022DD50 /* KBLabel.m in Sources */,
+				AEE84E75132DD3710022DD50 /* KBScroller.m in Sources */,
+				AEE84E76132DD3710022DD50 /* KBScrollView.m in Sources */,
+				AEE84E77132DD3710022DD50 /* KBSearchField.m in Sources */,
+				AEE84E78132DD3710022DD50 /* KBSearchFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

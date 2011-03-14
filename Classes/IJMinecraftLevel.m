@@ -86,28 +86,14 @@
 #pragma mark -
 #pragma mark Helpers
 
-+ (NSString *)pathForWorldAtIndex:(int)worldIndex
++ (BOOL)worldExistsAtPath:(NSString *)worldPath
 {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-	NSString *path = [paths objectAtIndex:0];
-	path = [path stringByAppendingPathComponent:@"minecraft"];
-	path = [path stringByAppendingPathComponent:@"saves"];
-	path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"World%d", worldIndex]];
-	return path;
+	return [[NSFileManager defaultManager] fileExistsAtPath:[self levelDataPathForWorld:worldPath]];
 }
 
-+ (NSString *)pathForLevelDatAtIndex:(int)worldIndex
++ (NSString *)levelDataPathForWorld:(NSString *)worldPath
 {
-	return [[[self class] pathForWorldAtIndex:worldIndex] stringByAppendingPathComponent:@"level.dat"];
-}
-+ (NSString *)pathForSessionLockAtIndex:(int)worldIndex
-{
-	return [[[self class] pathForWorldAtIndex:worldIndex] stringByAppendingPathComponent:@"session.lock"];
-}
-
-+ (BOOL)worldExistsAtIndex:(int)worldIndex
-{
-	return [[NSFileManager defaultManager] fileExistsAtPath:[[self class] pathForLevelDatAtIndex:worldIndex]];
+	return [worldPath stringByAppendingPathComponent:@"level.dat"];
 }
 
 + (NSData *)dataWithInt64:(int64_t)v
@@ -128,23 +114,23 @@
 	return n;
 }
 
-+ (int64_t)writeToSessionLockAtIndex:(int)worldIndex
++ (int64_t)writeToSessionLockAtPath:(NSString *)worldPath
 {
-	NSString *path = [IJMinecraftLevel pathForSessionLockAtIndex:worldIndex];
+	NSString *path = [worldPath stringByAppendingPathComponent:@"session.lock"];
 	NSDate *now = [NSDate date];
 	NSTimeInterval interval = [now timeIntervalSince1970];
 	int64_t milliseconds = (int64_t)(interval * 1000.0);
 	// write as number of milliseconds
 	
-	NSData *data = [IJMinecraftLevel dataWithInt64:milliseconds];
+	NSData *data = [self dataWithInt64:milliseconds];
 	[data writeToFile:path atomically:YES];
 	
 	return milliseconds;
 }
 
-+ (BOOL)checkSessionLockAtIndex:(int)worldIndex value:(int64_t)checkValue
++ (BOOL)checkSessionLockAtPath:(NSString *)worldPath value:(int64_t)checkValue
 {
-	NSString *path = [IJMinecraftLevel pathForSessionLockAtIndex:worldIndex];
+	NSString *path = [worldPath stringByAppendingPathComponent:@"session.lock"];
 	NSData *data = [NSData dataWithContentsOfFile:path];
 
 	if (!data)
@@ -153,7 +139,7 @@
 		return NO;
 	}
 	
-	int64_t milliseconds = [IJMinecraftLevel int64FromData:data];
+	int64_t milliseconds = [self int64FromData:data];
 	return checkValue == milliseconds;
 }
 

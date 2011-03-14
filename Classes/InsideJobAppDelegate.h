@@ -11,7 +11,7 @@
 @class IJInventoryWindowController;
 
 @interface InsideJobAppDelegate : NSObject <NSApplicationDelegate> {
-    IJInventoryWindowController *inventoryWindowController;
+	IJInventoryWindowController *inventoryWindowController;
 }
 
 @property (assign) IBOutlet IJInventoryWindowController *inventoryWindowController;
