@@ -2,7 +2,7 @@
 
 ### A Minecraft Alpha Inventory Editor for Mac OS X
 
-![Inside Job Screenshot](http://mcspider.bzextreme.com/files/Inside%20Job%201.0.3.png)
+![Inside Job Screenshot](http://mcspider.bzextreme.com/files/Inside%20Job%201.0.4.png)
 
 Inside Job was written in early October 2010 by [Adam Preble](http://adampreble.net).
 
@@ -19,9 +19,9 @@ Mac OS X 10.6 Snow Leopard.
 
 ### Instructions
 
-Inside Job operates on Minecraft's level.dat files, located in _~/Library/Application Support/minecraft/saves/World*_.  While Inside Job was written to interact with Minecraft's data as safely as possible, it's entirely possible that it will destroy it completely.  Please back up your Minecraft saves folder before using Inside Job.
+Inside Job operates on Minecraft's level.dat files, located in _~/Library/Application Support/minecraft/saves/.  While Inside Job was written to interact with Minecraft's data as safely as possible, it's entirely possible that it will destroy it completely.  Please back up your Minecraft saves folder before using Inside Job.
 
-Be sure to save and exit any open Minecraft worlds before running Inside Job.  Once run, Inside Job will open the first world and display your inventory.  You can change worlds using Command-1 thru 5, or using the segmented control at the top of the main window.  Note that Inside Job can only edit existing worlds.
+Be sure to save and exit any open Minecraft worlds before running Inside Job.  Once run, Inside Job will open the first world and display your inventory. Note that Inside Job can only edit existing worlds.
 
 To alter your inventory, use the item list at right to find the item you desire, then drag it into an  inventory slot.  Rearrange items by dragging them to different slots.  To copy an item, including its quantity, hold the Option key when you start dragging.
 
@@ -29,28 +29,20 @@ Note that Inside Job works differently from the Minecraft inventory screen in th
 
 To alter the quantity or damage of a particular item, click on its inventory slot.  To accept the changes, hit escape or click outside of the popup window.
 
-After changing your inventory you will need to save the currently open world using the World menu, or Command-S.  Once you have saved the world you can open it in Minecraft.  Note that if a world is opened in Minecraft while it is open in Inside Job, you will need to re-open it by switching to another world before switching back.  This is because Minecraft's file locking system gives write access to the last program to open it.
+After changing your inventory you will need to save the currently open world using the World menu, or Command-S.  Once you have saved the world you can open it in Minecraft.  Note that if a world is opened in Minecraft while it is open in Inside Job, you will need to reload it using the World menu, or Command-R.  This is because Minecraft's file locking system gives write access to the last program to open it.
 
 ### Release Notes
 
+#### 1.0.4 - March 15, 2011
+
+- New UI, added a world selector.
+
 #### 1.0.3 - March 13, 2011
 
+- Cloned from [/preble/InsideJob](http://github.com/preble/InsideJob)
 - Inside Job now supports worlds created in Minecraft Beta 1.3
 - Fixed a bug in the search field preventing deletion of text.
 - New UI
-
-#### 1.0.2 - February 25, 2011
-
-- Inside Job presently only supports worlds named "World1" thru "World5".  Support for worlds with other names will be added in a future release.
-- Added 1.3 and 1.2 beta items, as well as "unknown item" image, thanks to Nick Loose!
-- Inside Job now allows negative damage values (such as -1000) to create indestructible items.
-- Streamlined keyboard item-adding: search with Command-F, down arrow to navigate to item, then return adds it to the first available inventory slot.
-
-#### 1.0.1 - November 2, 2010
-
-- Added Halloween update items (thanks to nickloose)
-- Improved safety of world saving
-- Now prompts to save when closing or moving away from an unsaved world
 
 ### Credits
 

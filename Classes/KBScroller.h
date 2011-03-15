@@ -11,6 +11,9 @@
 
 @interface KBScroller : NSScroller {
 	BOOL isVertical;
+	BOOL overlaysContent;
 }
+
+@property BOOL overlaysContent;
 
 @end

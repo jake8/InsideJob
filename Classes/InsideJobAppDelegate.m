@@ -11,8 +11,6 @@
 
 @implementation InsideJobAppDelegate
 
-@synthesize inventoryWindowController;
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[inventoryWindowController.statusTextField setStringValue:@"No world loaded!"];
 }

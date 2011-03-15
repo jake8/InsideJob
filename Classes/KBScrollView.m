@@ -13,7 +13,7 @@
 
 - (void)tile {
 	[super tile];
-	[[self contentView] setFrame:[self bounds]];
+	//[[self contentView] setFrame:[self bounds]];
 }
 
 @end

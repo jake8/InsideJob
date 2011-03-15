@@ -15,25 +15,27 @@
 @class IJItemPropertiesViewController;
 
 @interface IJInventoryWindowController : NSWindowController <NSWindowDelegate, IJInventoryViewDelegate> {
-	
-	NSView *editorView;
+			
 	
 	IJMinecraftLevel *level;
 	NSArray *inventory;
 	
 	NSTextField *statusTextField;
+	IBOutlet NSTabView *contentView;
+
 	
-	IJInventoryView *inventoryView;
-	IJInventoryView *quickView;
-	IJInventoryView *armorView;
+	IBOutlet IJInventoryView *inventoryView;
+	IBOutlet IJInventoryView *quickView;
+	IBOutlet IJInventoryView *armorView;
+	
 	
 	NSMutableArray *armorInventory;
 	NSMutableArray *quickInventory;
 	NSMutableArray *normalInventory;
 	
 	// Search/Item List
-	NSSearchField *itemSearchField;
-	NSTableView *itemTableView;
+	IBOutlet NSSearchField *itemSearchField;
+	IBOutlet NSTableView *itemTableView;
 	NSArray *allItemIds;
 	NSArray *filteredItemIds;
 	
@@ -49,14 +51,7 @@
 }
 
 @property (nonatomic, assign) IBOutlet NSTextField *statusTextField;
-@property (nonatomic, assign) IBOutlet IJInventoryView *inventoryView;
-@property (nonatomic, assign) IBOutlet IJInventoryView *quickView;
-@property (nonatomic, assign) IBOutlet IJInventoryView *armorView;
-@property (nonatomic, assign) IBOutlet NSSearchField *itemSearchField;
-@property (nonatomic, assign) IBOutlet NSTableView *itemTableView;
-@property (nonatomic, assign) IBOutlet NSView *editorView;
-
-
+@property (nonatomic, assign) IBOutlet NSTabView *contentView;
 @property (nonatomic, retain) NSNumber *worldTime;
 
 - (IBAction)openWorld:(id)sender;
@@ -64,6 +59,10 @@
 - (IBAction)updateItemSearchFilter:(id)sender;
 - (IBAction)makeSearchFieldFirstResponder:(id)sender;
 - (IBAction)itemTableViewDoubleClicked:(id)sender;
+
+- (void)saveWorld;
+- (BOOL)loadWorldAtPath:(NSString *)path;
+- (BOOL)isDocumentEdited;
 
 
 @end

@@ -13,19 +13,14 @@
 #import "IJItemPropertiesViewController.h"
 #import "MAAttachedWindow.h"
 
-@interface IJInventoryWindowController ()
-- (void)saveWorld;
-- (void)loadWorldAtPath:(NSString *)path;
-- (BOOL)isDocumentEdited;
-@end
 
 @implementation IJInventoryWindowController
-
 @synthesize statusTextField;
-@synthesize inventoryView, armorView, quickView;
-@synthesize itemSearchField, itemTableView;
-@synthesize editorView;
+@synthesize contentView;
 
+
+#pragma mark -
+#pragma mark Initialization
 
 - (void)awakeFromNib
 {
@@ -43,7 +38,7 @@
 	inventoryView.delegate = self;
 	quickView.delegate = self;
 	armorView.delegate = self;
-
+	
 	// Item Table View setup
 	NSArray *keys = [[IJInventoryItem itemIdLookup] allKeys];
 	keys = [keys sortedArrayUsingSelector:@selector(compare:)];
@@ -53,48 +48,14 @@
 	[itemTableView setTarget:self];
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
 	
-	[editorView setHidden:YES];
 	[self.window setShowsResizeIndicator:NO];
-}
-
-- (void)dealloc
-{
-	[loadedWorldPath release];
-	[attemptedLoadWorldPath release];
-	[propertiesViewController release];
-	[armorInventory release];
-	[quickInventory release];
-	[normalInventory release];
-	[inventory release];
-	[level release];
-	[super dealloc];
 }
 
 
 #pragma mark -
 #pragma mark World Selection
 
-- (void)dirtyLoadSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
-{	
-	if (returnCode == NSAlertDefaultReturn) // Save
-	{
-		[self saveWorld];
-		[self loadWorldAtPath:attemptedLoadWorldPath];
-	}
-	else if (returnCode == NSAlertAlternateReturn) // Don't save
-	{
-		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
-		[self loadWorldAtPath:attemptedLoadWorldPath];
-	}
-}
-
-- (void)sessionLockAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
-{	
-	[self setDocumentEdited:NO];
-	[self loadWorldAtPath:loadedWorldPath];
-}
-
-- (void)loadWorldAtPath:(NSString *)worldPath;
+- (BOOL)loadWorldAtPath:(NSString *)worldPath;
 {
 	NSString *levelPath = [worldPath stringByExpandingTildeInPath];
 	
@@ -102,10 +63,11 @@
 	{
 		[attemptedLoadWorldPath release];
 		attemptedLoadWorldPath = [levelPath copy];
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyLoadSheetDidEnd:returnCode:contextInfo:), nil, nil, 
+		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), nil, @"Load", 
 																	 @"Your changes will be lost if you do not save them.");
-		return;
+		return NO;
 	}
+	[contentView selectTabViewItemAtIndex:1];
 	
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
@@ -128,7 +90,7 @@
 	{
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
 															@"Inside Job was unable to locate the level.dat file.");
-		return;
+		return NO;
 	}
 	
 		
@@ -137,7 +99,7 @@
 	{
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
 															@"Inside Job was unable obtain the session lock.");
-		return;
+		return NO;
 	}
 	
 	NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[IJMinecraftLevel levelDataPathForWorld:levelPath]]];	
@@ -146,7 +108,7 @@
 		// Error loading 
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
 															@"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
-		return;
+		return NO;
 	}
 	
 	[self willChangeValueForKey:@"worldTime"];
@@ -185,9 +147,6 @@
 		}
 	}
 	
-//	NSLog(@"normal: %@", normalInventory);
-//	NSLog(@"quick: %@", quickInventory);
-	
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
@@ -197,7 +156,10 @@
 
 	[loadedWorldPath release];
 	loadedWorldPath = [levelPath copy];
-	[editorView setHidden:NO];
+	[contentView selectTabViewItemAtIndex:1];
+	NSString *statusMessage = [NSString stringWithFormat:@"Loaded world: %@",[[loadedWorldPath lastPathComponent] stringByDeletingPathExtension]];
+	[statusTextField setStringValue:statusMessage];
+	return YES;
 }
 
 - (IBAction)reloadWorldInformation:(id)sender
@@ -279,6 +241,26 @@
 	statusTextField.stringValue = @"World saved.";
 }
 
+- (void)dirtyOpenSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
+{	
+	if (returnCode == NSAlertDefaultReturn) // Save
+	{
+		[self saveWorld];
+		[self loadWorldAtPath:attemptedLoadWorldPath];
+	}
+	else if (returnCode == NSAlertAlternateReturn) // Don't save
+	{
+		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
+		[self loadWorldAtPath:attemptedLoadWorldPath];
+	}
+}
+
+- (void)sessionLockAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
+{	
+	[self setDocumentEdited:NO];
+	[self loadWorldAtPath:loadedWorldPath];
+}
+
 - (void)setDocumentEdited:(BOOL)edited
 {
 	[super setDocumentEdited:edited];
@@ -291,26 +273,27 @@
 	return [self.window isDocumentEdited];
 }
 
+
 #pragma mark -
 #pragma mark Actions
 
 - (IBAction)openWorld:(id)sender
 {
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	
-	// set up new attributes //
-	[openPanel setCanChooseDirectories:YES];
-	[openPanel setCanChooseFiles:NO];
-	[openPanel setAllowsMultipleSelection:NO];
-	[openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath]]];
-	
-	// display the NSSavePanel //
-	[openPanel beginWithCompletionHandler:^(NSInteger runResult){
-		if (runResult == NSFileHandlingPanelOKButton) {
-			NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
-			[self loadWorldAtPath:filePath];
-		}
-	}];
+	 
+	 // Set up the panel
+	 [openPanel setCanChooseDirectories:YES];
+	 [openPanel setCanChooseFiles:NO];
+	 [openPanel setAllowsMultipleSelection:NO];
+	 [openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath]]];
+	 
+	 // Display the NSOpenPanel
+	 [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger runResult){
+	 if (runResult == NSFileHandlingPanelOKButton) {
+	 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
+	 [self loadWorldAtPath:filePath];
+	 }
+	 }];
 }
 
 - (void)saveDocument:(id)sender
@@ -337,6 +320,8 @@
 {
 	if (anItem.action == @selector(saveDocument:))
 		return inventory != nil;
+	if (anItem.action == @selector(reloadWorldInformation:))
+		return inventory != nil;
 		
 	return YES;
 }
@@ -345,6 +330,7 @@
 {
 	return 	[level worldTimeContainer].numberValue;
 }
+
 - (void)setWorldTime:(NSNumber *)number
 {
 	[self willChangeValueForKey:@"worldTime"];
@@ -371,18 +357,15 @@
 
 - (NSMutableArray *)itemArrayForInventoryView:(IJInventoryView *)theInventoryView slotOffset:(int*)slotOffset
 {
-	if (theInventoryView == inventoryView)
-	{
+	if (theInventoryView == inventoryView) {
 		if (slotOffset) *slotOffset = IJInventorySlotNormalFirst;
 		return normalInventory;
 	}
-	else if (theInventoryView == quickView)
-	{
+	else if (theInventoryView == quickView) {
 		if (slotOffset) *slotOffset = IJInventorySlotQuickFirst;
 		return quickInventory;
 	}
-	else if (theInventoryView == armorView)
-	{
+	else if (theInventoryView == armorView) {
 		if (slotOffset) *slotOffset = IJInventorySlotArmorFirst;
 		return armorInventory;
 	}
@@ -394,8 +377,7 @@
 	int slotOffset = 0;
 	NSMutableArray *itemArray = [self itemArrayForInventoryView:theInventoryView slotOffset:&slotOffset];
 	
-	if (itemArray)
-	{
+	if (itemArray) {
 		IJInventoryItem *item = [IJInventoryItem emptyItemWithSlot:slotOffset + itemIndex];
 		[itemArray replaceObjectAtIndex:itemIndex withObject:item];
 		[theInventoryView setItems:itemArray];
@@ -408,8 +390,7 @@
 	int slotOffset = 0;
 	NSMutableArray *itemArray = [self itemArrayForInventoryView:theInventoryView slotOffset:&slotOffset];
 	
-	if (itemArray)
-	{
+	if (itemArray) {
 		[itemArray replaceObjectAtIndex:itemIndex withObject:item];
 		item.slot = slotOffset + itemIndex;
 		[theInventoryView setItems:itemArray];
@@ -429,9 +410,8 @@
 	
 	NSArray *items = [self itemArrayForInventoryView:theInventoryView slotOffset:nil];
 	IJInventoryItem *item = [items objectAtIndex:itemIndex];
-	//NSLog(@"%s index=%d item=%@", _cmd, itemIndex, item);
-	if (item.itemId == 0 || lastItem == item)
-	{
+
+	if (item.itemId == 0 || lastItem == item) {
 		// Perhaps caused by a bug, but it seems to be possible for the window to not be invisible at this point,
 		// so we will set the alpha value here to be sure.
 		[propertiesWindow setAlphaValue:0.0];
@@ -439,8 +419,7 @@
 		return; // can't show info on nothing
 	}
 	
-	if (!propertiesViewController)
-	{
+	if (!propertiesViewController) {
 		propertiesViewController = [[IJItemPropertiesViewController alloc] initWithNibName:@"ItemPropertiesView" bundle:nil];
 		
 		propertiesWindow = [[MAAttachedWindow alloc] initWithView:propertiesViewController.view
@@ -453,8 +432,9 @@
 		[propertiesWindow setAlphaValue:1.0];
 		[[self window] addChildWindow:propertiesWindow ordered:NSWindowAbove];
 	}
-	if (observerObject)
+	if (observerObject) {
 		[[NSNotificationCenter defaultCenter] removeObserver:observerObject];
+	}
 	observerObject = [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowDidResignKeyNotification
 																	   object:propertiesWindow
 																		queue:[NSOperationQueue mainQueue]
@@ -471,16 +451,15 @@
 	[propertiesWindow setAlphaValue:1.0];
 }
 
+
 #pragma mark -
 #pragma mark Item Picker
-
 
 - (IBAction)updateItemSearchFilter:(id)sender
 {
 	NSString *filterString = [sender stringValue];
 	
-	if (filterString.length == 0)
-	{
+	if (filterString.length == 0) {
 		[filteredItemIds autorelease];
 		filteredItemIds = [allItemIds retain];
 		[itemTableView reloadData];
@@ -489,20 +468,18 @@
 	
 	NSMutableArray *results = [NSMutableArray array];
 	
-	for (NSNumber *itemId in allItemIds)
-	{
+	for (NSNumber *itemId in allItemIds) {
 		NSString *name = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
 		NSRange range = [name rangeOfString:filterString options:NSCaseInsensitiveSearch];
-		if (range.location != NSNotFound)
-		{
+		
+		if (range.location != NSNotFound) {
 			[results addObject:itemId];
 			continue;
 		}
 		
 		// Also search the item id:
 		range = [[itemId stringValue] rangeOfString:filterString];
-		if (range.location != NSNotFound)
-		{
+		if (range.location != NSNotFound) {
 			[results addObject:itemId];
 			continue;
 		}
@@ -517,24 +494,23 @@
 {
 	return filteredItemIds.count;
 }
+
 - (id)tableView:(NSTableView *)theTableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
 	NSNumber *itemId = [filteredItemIds objectAtIndex:row];
 	
-	if ([tableColumn.identifier isEqual:@"itemId"])
-	{
+	if ([tableColumn.identifier isEqual:@"itemId"]) {
 		return itemId;
 	}
-	else if ([tableColumn.identifier isEqual:@"image"])
-	{
+	else if ([tableColumn.identifier isEqual:@"image"]) {
 		return [IJInventoryItem imageForItemId:[itemId shortValue]];
 	}
-	else
-	{
+	else {
 		NSString *name = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
 		return name;
 	}
 }
+
 - (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
 {
 	[pboard declareTypes:[NSArray arrayWithObjects:IJPasteboardTypeInventoryItem, nil] owner:nil];
@@ -557,20 +533,21 @@
 
 - (NSMutableArray *)inventoryArrayWithEmptySlot:(NSUInteger *)slot
 {
-	for (NSMutableArray *inventoryArray in [NSArray arrayWithObjects:quickInventory, normalInventory, nil])
-	{
+	for (NSMutableArray *inventoryArray in [NSArray arrayWithObjects:quickInventory, normalInventory, nil]) {
 		__block BOOL found = NO;
+		
 		[inventoryArray enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop) {
 			IJInventoryItem *item = obj;
-			if (item.count == 0)
-			{
+			if (item.count == 0) {
 				*slot = index;
 				*stop = YES;
 				found = YES;
 			}
 		}];
-		if (found)
+		
+		if (found) {
 			return inventoryArray;
+		}
 	}
 	return nil;
 }
@@ -597,16 +574,15 @@
 
 - (void)dirtyCloseSheetDidDismiss:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
 {
-	if (returnCode == NSAlertOtherReturn) // Cancel
+	if (returnCode == NSAlertOtherReturn) { // Cancel
 		return;
+	}
 	
-	if (returnCode == NSAlertDefaultReturn) // Save
-	{
+	if (returnCode == NSAlertDefaultReturn){ // Save
 		[self saveWorld];
 		[self.window performClose:nil];
 	}
-	else if (returnCode == NSAlertAlternateReturn) // Don't save
-	{
+	else if (returnCode == NSAlertAlternateReturn) { // Don't save
 		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
 		[self.window performClose:nil];
 	}
@@ -615,9 +591,8 @@
 
 - (BOOL)windowShouldClose:(id)sender
 {
-	if ([self isDocumentEdited])
-	{
-		// Note: We use the didDismiss selector becuase the sheet needs to be closed in order for performClose: to work.
+	if ([self isDocumentEdited]) {
+		// Note: We use the didDismiss selector because the sheet needs to be closed in order for performClose: to work.
 		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, 
 																	 @"Your changes will be lost if you do not save them.");
 		return NO;
@@ -636,10 +611,8 @@
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command
 {
-	if (command == @selector(moveDown:))
-	{
-		if ([itemTableView numberOfRows] > 0)
-		{
+	if (command == @selector(moveDown:)) {
+		if ([itemTableView numberOfRows] > 0) {
 			[self.window makeFirstResponder:itemTableView];
 			[itemTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
 		}
@@ -648,5 +621,21 @@
 	return NO;
 }
 
+
+#pragma mark -
+#pragma mark Cleanup
+
+- (void)dealloc
+{
+	[loadedWorldPath release];
+	[attemptedLoadWorldPath release];
+	[propertiesViewController release];
+	[armorInventory release];
+	[quickInventory release];
+	[normalInventory release];
+	[inventory release];
+	[level release];
+	[super dealloc];
+}
 
 @end
