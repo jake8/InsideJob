@@ -57,10 +57,8 @@
 		[newPresetSheetController setSheetErrorMessage:@"A preset with that name already exists."];
 		return;
 	}
-	
-	NSLog(@"Inventory 2: %@",inventoryController.inventory);
-	
-	NSArray *inventoryData = inventoryController.inventory;
+		
+	NSArray *inventoryData = [inventoryController currentInventory];
 	NSMutableArray *newPreset = [NSMutableArray array];
 	
 	int index;
@@ -81,28 +79,18 @@
 
 - (IBAction)deletePreset:(id)sender
 {
-	NSString *presetPath = [sender representedObject];
-	NSLog(@"Remove Preset: %@",presetPath);
-	
+	NSString *presetPath = [sender representedObject];	
 	[[NSFileManager defaultManager] removeItemAtPath:presetPath error:NULL];
-	
 	[self reloadPresetList];
 }
 
 - (IBAction)loadPreset:(id)sender
 {
 	NSString *presetPath = [sender representedObject];	
-	
-	NSLog(@"Load Preset: %@",presetPath);
-	
-	[inventoryController clearInventory];
-	
 	NSArray *newInventory = [NSKeyedUnarchiver unarchiveObjectWithFile:presetPath];
 	
-	NSLog(@"Inventory 3: %@",newInventory);
-	
+	[inventoryController clearInventory];
 	[inventoryController setInventory:newInventory];
-
 }
 
 
@@ -161,8 +149,6 @@
 			[menuItemDelete setTarget:self];
 			[menuItemDelete setAction:@selector(deletePreset:)];
 			[presetMenu addItem:menuItemDelete];
-
-						
 		}
 	}
 }

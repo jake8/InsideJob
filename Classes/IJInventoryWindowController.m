@@ -50,6 +50,7 @@
 	
 	[itemTableView setTarget:self];
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
+	[contentView selectTabViewItemAtIndex:0];
 	
 }
 
@@ -117,8 +118,9 @@
 	
 	level = [[IJMinecraftLevel nbtContainerWithData:fileData] retain];
 	inventory = [[level inventory] retain];
-	
+		
 	[self didChangeValueForKey:@"worldTime"];
+	
 	
 	// Add placeholder inventory items:
 	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++)
@@ -325,7 +327,7 @@
 - (IBAction)addItem:(id)sender
 {
 	short itemID = [newItemField intValue];
-	if (itemID == 0 || itemID > 3000) {
+	if (itemID == 0 || itemID > 3000 || itemID == -1) {
 		[newItemSheetController setSheetErrorMessage:@"Invalid item id."];
 		return;
 	}
@@ -577,6 +579,17 @@
 		}
 	}
 	return nil;
+}
+
+- (NSArray *)currentInventory
+{
+	NSMutableArray *inventoryArray = [[[NSMutableArray alloc] init] autorelease];
+	
+	[inventoryArray addObjectsFromArray:armorInventory];
+	[inventoryArray addObjectsFromArray:quickInventory];
+	[inventoryArray addObjectsFromArray:normalInventory];
+
+	return inventoryArray;
 }
 
 - (void)addInventoryItem:(short)item selectItem:(BOOL)flag

@@ -77,6 +77,7 @@
 
 - (void)clearInventory;
 - (void)setInventory:(NSArray *)newInventory;
+- (NSArray *)currentInventory;
 - (void)addInventoryItem:(short)item selectItem:(BOOL)flag;
 
 @end
