@@ -33,9 +33,11 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
-#### 1.0.4 - March 15, 2011
+#### 1.0.4 - March 16, 2011
 
 - New UI, added a world selector.
+- Added preset saving and loading
+- New 'Add Item by ID', menu item.
 
 #### 1.0.3 - March 13, 2011
 
@@ -46,13 +48,14 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Credits
 
-Inside Job uses [Matt Gemmell](http://mattgemmell.com/)'s MAAttachedWindow.  Item graphics were originally created by Mojang Specifications and compiled by Trojam and the Minecraft community.
+Inside Job uses [Matt Gemmell](http://mattgemmell.com/)'s MAAttachedWindow and [Brandon Walkin](http://www.brandonwalkin.com/)'s BWSheetController.  Item graphics were originally created by Mojang Specifications and compiled by Trojam and the Minecraft community.
 
 ### License
 
 Inside Job is made available under the [MIT License](http://www.opensource.org/licenses/mit-license.html).  Its source code can be found on GitHub: [http://github.com/preble/InsideJob]().
 
 	Copyright (c) 2010 Adam Preble
+	Parts Copyright (c) 2011 Ben K
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal

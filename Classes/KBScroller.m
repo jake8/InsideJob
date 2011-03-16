@@ -1,9 +1,9 @@
 //
 //  KBScroller.m
-//  IRCBot
+//  Inside Job
 //
 //  Created by Ben K on 2010/11/21.
-//  All code is provided under the New BSD license.
+//  Copyright 2011 Ben K. All rights reserved.
 //
 
 #import "KBScroller.h"

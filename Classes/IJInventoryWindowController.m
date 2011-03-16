@@ -12,9 +12,12 @@
 #import "IJInventoryView.h"
 #import "IJItemPropertiesViewController.h"
 #import "MAAttachedWindow.h"
+#import "BWSheetController.h"
 
 
 @implementation IJInventoryWindowController
+@synthesize inventory;
+@synthesize inventoryView, quickView, armorView;
 @synthesize statusTextField;
 @synthesize contentView;
 
@@ -48,7 +51,6 @@
 	[itemTableView setTarget:self];
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
 	
-	[self.window setShowsResizeIndicator:NO];
 }
 
 
@@ -67,7 +69,31 @@
 																	 @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
-	[contentView selectTabViewItemAtIndex:1];
+	
+	if (![IJMinecraftLevel worldExistsAtPath:levelPath])
+	{
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"Inside Job was unable to locate the level.dat file.");
+		return NO;
+	}	
+	
+	sessionLockValue = [IJMinecraftLevel writeToSessionLockAtPath:levelPath];
+	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue])
+	{
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"Inside Job was unable obtain the session lock.");
+		return NO;
+	}
+	
+	NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[IJMinecraftLevel levelDataPathForWorld:levelPath]]];	
+	if (!fileData)
+	{
+		// Error loading 
+		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
+															@"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
+		return NO;
+	}
+	
 	
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
@@ -86,30 +112,6 @@
 	
 	statusTextField.stringValue = @"No world loaded.";
 	
-	if (![IJMinecraftLevel worldExistsAtPath:levelPath])
-	{
-		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable to locate the level.dat file.");
-		return NO;
-	}
-	
-		
-	sessionLockValue = [IJMinecraftLevel writeToSessionLockAtPath:levelPath];
-	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue])
-	{
-		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable obtain the session lock.");
-		return NO;
-	}
-	
-	NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:[IJMinecraftLevel levelDataPathForWorld:levelPath]]];	
-	if (!fileData)
-	{
-		// Error loading 
-		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
-		return NO;
-	}
 	
 	[self willChangeValueForKey:@"worldTime"];
 	
@@ -159,6 +161,7 @@
 	[contentView selectTabViewItemAtIndex:1];
 	NSString *statusMessage = [NSString stringWithFormat:@"Loaded world: %@",[[loadedWorldPath lastPathComponent] stringByDeletingPathExtension]];
 	[statusTextField setStringValue:statusMessage];
+	[contentView selectTabViewItemAtIndex:1];
 	return YES;
 }
 
@@ -245,14 +248,26 @@
 {	
 	if (returnCode == NSAlertDefaultReturn) // Save
 	{
-		[self saveWorld];
-		[self loadWorldAtPath:attemptedLoadWorldPath];
+		if ([(NSString *)contextInfo isEqualToString:@"Load"]) {
+			[self saveWorld];
+			[self loadWorldAtPath:attemptedLoadWorldPath];
+		}
+		else {
+			[self saveWorld];
+			[contentView selectTabViewItemAtIndex:0];
+		}		
 	}
 	else if (returnCode == NSAlertAlternateReturn) // Don't save
 	{
 		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
-		[self loadWorldAtPath:attemptedLoadWorldPath];
+		if ([(NSString *)contextInfo isEqualToString:@"Load"]) {
+			[self loadWorldAtPath:attemptedLoadWorldPath];
+		}
+		else {
+			[contentView selectTabViewItemAtIndex:0];
+		}
 	}
+	
 }
 
 - (void)sessionLockAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void  *)contextInfo
@@ -285,15 +300,37 @@
 	 [openPanel setCanChooseDirectories:YES];
 	 [openPanel setCanChooseFiles:NO];
 	 [openPanel setAllowsMultipleSelection:NO];
-	 [openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath]]];
+	 [openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/" stringByExpandingTildeInPath]]];
 	 
-	 // Display the NSOpenPanel
-	 [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger runResult){
+	 // Display the NSOpenPanel -- beginSheetModalForWindow:self.window completionHandler
+	 [openPanel beginWithCompletionHandler:^(NSInteger runResult){
 	 if (runResult == NSFileHandlingPanelOKButton) {
 	 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
 	 [self loadWorldAtPath:filePath];
 	 }
 	 }];
+}
+
+- (IBAction)showWorldSelector:(id)sender
+{
+	if ([self isDocumentEdited])
+	{
+		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), nil, @"Select", 
+																	 @"Your changes will be lost if you do not save them.");
+		return;
+	}
+	[contentView selectTabViewItemAtIndex:0];
+}
+
+- (IBAction)addItem:(id)sender
+{
+	short itemID = [newItemField intValue];
+	if (itemID == 0) {
+		return;
+	}
+	
+	[newItemSheetController closeSheet:self];
+	[self addInventoryItem:itemID selectItem:YES];
 }
 
 - (void)saveDocument:(id)sender
@@ -321,6 +358,8 @@
 	if (anItem.action == @selector(saveDocument:))
 		return inventory != nil;
 	if (anItem.action == @selector(reloadWorldInformation:))
+		return inventory != nil;
+	if (anItem.action == @selector(showWorldSelector:))
 		return inventory != nil;
 		
 	return YES;
@@ -453,6 +492,112 @@
 
 
 #pragma mark -
+#pragma mark Inventory
+
+- (void)clearInventory
+{
+	[armorInventory removeAllObjects];
+	[quickInventory removeAllObjects];
+	[normalInventory removeAllObjects];
+	
+	[inventoryView setItems:normalInventory];
+	[quickView setItems:quickInventory];
+	[armorView setItems:armorInventory];	
+}
+
+- (void)setInventory:(NSArray *)newInventory
+{
+	[armorInventory removeAllObjects];
+	[quickInventory removeAllObjects];
+	[normalInventory removeAllObjects];
+	
+	[inventoryView setItems:normalInventory];
+	[quickView setItems:quickInventory];
+	[armorView setItems:armorInventory];
+	
+	[inventory release];
+	inventory = nil;
+	
+	inventory = [newInventory retain];
+	
+	// Add placeholder inventory items:
+	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++)
+		[quickInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotQuickFirst + i]];
+	
+	for (int i = 0; i < IJInventorySlotNormalLast + 1 - IJInventorySlotNormalFirst; i++)
+		[normalInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotNormalFirst + i]];
+	
+	for (int i = 0; i < IJInventorySlotArmorLast + 1 - IJInventorySlotArmorFirst; i++)
+		[armorInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotArmorFirst + i]];
+	
+	
+	// Overwrite the placeholders with actual inventory:
+	
+	for (IJInventoryItem *item in inventory)
+	{
+		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast)
+		{
+			[quickInventory replaceObjectAtIndex:item.slot - IJInventorySlotQuickFirst withObject:item];
+		}
+		else if (IJInventorySlotNormalFirst <= item.slot && item.slot <= IJInventorySlotNormalLast)
+		{
+			[normalInventory replaceObjectAtIndex:item.slot - IJInventorySlotNormalFirst withObject:item];
+		}
+		else if (IJInventorySlotArmorFirst <= item.slot && item.slot <= IJInventorySlotArmorLast)
+		{
+			[armorInventory replaceObjectAtIndex:item.slot - IJInventorySlotArmorFirst withObject:item];
+		}
+	}
+	
+	[inventoryView setItems:normalInventory];
+	[quickView setItems:quickInventory];
+	[armorView setItems:armorInventory];
+	
+	[self setDocumentEdited:YES];	
+}
+
+- (NSMutableArray *)inventoryArrayWithEmptySlot:(NSUInteger *)slot
+{
+	for (NSMutableArray *inventoryArray in [NSArray arrayWithObjects:quickInventory, normalInventory, nil]) {
+		__block BOOL found = NO;
+		
+		[inventoryArray enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop) {
+			IJInventoryItem *item = obj;
+			if (item.count == 0) {
+				*slot = index;
+				*stop = YES;
+				found = YES;
+			}
+		}];
+		
+		if (found) {
+			return inventoryArray;
+		}
+	}
+	return nil;
+}
+
+- (void)addInventoryItem:(short)item selectItem:(BOOL)flag
+{
+	NSUInteger slot;
+	NSMutableArray *inventoryArray = [self inventoryArrayWithEmptySlot:&slot];
+	if (!inventoryArray)
+		return;
+	
+	IJInventoryItem *inventoryItem = [inventoryArray objectAtIndex:slot];
+	inventoryItem.itemId = item;
+	inventoryItem.count = 1;
+	[self setDocumentEdited:YES];
+	
+	IJInventoryView *invView = [self inventoryViewForItemArray:inventoryArray];
+	[invView reloadItemAtIndex:slot];
+	if (flag) {
+		[self inventoryView:invView selectedItemAtIndex:slot];
+	}
+}
+
+
+#pragma mark -
 #pragma mark Item Picker
 
 - (IBAction)updateItemSearchFilter:(id)sender
@@ -531,42 +676,10 @@
 	return YES;
 }
 
-- (NSMutableArray *)inventoryArrayWithEmptySlot:(NSUInteger *)slot
-{
-	for (NSMutableArray *inventoryArray in [NSArray arrayWithObjects:quickInventory, normalInventory, nil]) {
-		__block BOOL found = NO;
-		
-		[inventoryArray enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop) {
-			IJInventoryItem *item = obj;
-			if (item.count == 0) {
-				*slot = index;
-				*stop = YES;
-				found = YES;
-			}
-		}];
-		
-		if (found) {
-			return inventoryArray;
-		}
-	}
-	return nil;
-}
-
 - (IBAction)itemTableViewDoubleClicked:(id)sender
 {
-	NSUInteger slot;
-	NSMutableArray *inventoryArray = [self inventoryArrayWithEmptySlot:&slot];
-	if (!inventoryArray)
-		return;
-	
-	IJInventoryItem *item = [inventoryArray objectAtIndex:slot];
-	item.itemId = [[filteredItemIds objectAtIndex:[itemTableView selectedRow]] shortValue];
-	item.count = 1;
-	[self setDocumentEdited:YES];
-	
-	IJInventoryView *invView = [self inventoryViewForItemArray:inventoryArray];
-	[invView reloadItemAtIndex:slot];
-	[self inventoryView:invView selectedItemAtIndex:slot];
+	short selectedItem = [[filteredItemIds objectAtIndex:[itemTableView selectedRow]] shortValue];
+	[self addInventoryItem:selectedItem selectItem:YES];
 }
 
 #pragma mark -

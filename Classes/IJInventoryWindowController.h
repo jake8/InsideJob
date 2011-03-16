@@ -13,20 +13,22 @@
 @class IJMinecraftLevel;
 @class MAAttachedWindow;
 @class IJItemPropertiesViewController;
+@class BWSheetController;
 
 @interface IJInventoryWindowController : NSWindowController <NSWindowDelegate, IJInventoryViewDelegate> {
-			
+	
+	IBOutlet BWSheetController *newItemSheetController;
+	IBOutlet NSTextField *newItemField;
 	
 	IJMinecraftLevel *level;
 	NSArray *inventory;
 	
 	NSTextField *statusTextField;
 	IBOutlet NSTabView *contentView;
-
 	
-	IBOutlet IJInventoryView *inventoryView;
-	IBOutlet IJInventoryView *quickView;
-	IBOutlet IJInventoryView *armorView;
+	IJInventoryView *inventoryView;
+	IJInventoryView *quickView;
+	IJInventoryView *armorView;
 	
 	
 	NSMutableArray *armorInventory;
@@ -52,17 +54,29 @@
 
 @property (nonatomic, assign) IBOutlet NSTextField *statusTextField;
 @property (nonatomic, assign) IBOutlet NSTabView *contentView;
+@property (nonatomic, retain) IBOutlet IJInventoryView *inventoryView;
+@property (nonatomic, retain) IBOutlet IJInventoryView *quickView;
+@property (nonatomic, retain) IBOutlet IJInventoryView *armorView;
+
 @property (nonatomic, retain) NSNumber *worldTime;
+@property (readonly) NSArray *inventory;
+
 
 - (IBAction)openWorld:(id)sender;
+- (IBAction)showWorldSelector:(id)sender;
 - (IBAction)reloadWorldInformation:(id)sender;
 - (IBAction)updateItemSearchFilter:(id)sender;
 - (IBAction)makeSearchFieldFirstResponder:(id)sender;
 - (IBAction)itemTableViewDoubleClicked:(id)sender;
 
+- (IBAction)addItem:(id)sender;
+
 - (void)saveWorld;
 - (BOOL)loadWorldAtPath:(NSString *)path;
 - (BOOL)isDocumentEdited;
 
+- (void)clearInventory;
+- (void)setInventory:(NSArray *)newInventory;
+- (void)addInventoryItem:(short)item selectItem:(BOOL)flag;
 
 @end

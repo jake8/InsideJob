@@ -3,7 +3,7 @@
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
-//  Copyright 2011 Adam Preble. All rights reserved.
+//  Copyright 2011 Ben K. All rights reserved.
 //
 
 #import "KBWorldCollectionItem.h"

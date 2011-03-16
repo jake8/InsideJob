@@ -1,9 +1,9 @@
 //
 //  KBSearchFieldCell.m
-//  KBSearchFieldCell
+//  InsideJob
 //
 //  Created by Ben K on 2010/08/08.
-//  All code is provided under the New BSD license.
+//  Copyright 2011 Ben K. All rights reserved.
 //
 
 #import "KBSearchFieldCell.h"

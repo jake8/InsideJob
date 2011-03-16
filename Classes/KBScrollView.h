@@ -1,9 +1,9 @@
 //
 //  KBScrollView.h
-//  IRCBot
+//  Inside Job
 //
 //  Created by Ben K on 2010/11/22.
-//  All code is provided under the New BSD license.
+//  Copyright 2011 Ben K. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
