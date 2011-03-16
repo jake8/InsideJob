@@ -30,7 +30,7 @@
 
 @implementation BWSheetController
 
-@synthesize parentWindow, sheet, delegate;
+@synthesize parentWindow, sheet, delegate, errorMessage;
 
 - (void)awakeFromNib
 {
@@ -73,6 +73,7 @@
 
 - (IBAction)closeSheet:(id)sender
 {
+	[errorMessage setStringValue:@""];
 	[sheet orderOut:nil];
 	[NSApp endSheet:sheet];
 }
@@ -88,6 +89,11 @@
 	{
 		[self closeSheet:self];
 	}
+}
+
+- (void)setSheetErrorMessage:(NSString *)msg
+{
+	[errorMessage setStringValue:msg];
 }
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem

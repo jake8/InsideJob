@@ -33,15 +33,18 @@
 	IBOutlet IJInventoryWindowController *inventoryController;
 	NSWindow *sheet;
 	NSWindow *parentWindow;
+	NSTextField *errorMessage;
 	id delegate;
 }
 
 @property (nonatomic, retain) IBOutlet NSWindow *sheet, *parentWindow;
 @property (nonatomic, retain) IBOutlet id delegate;
+@property (nonatomic, retain) IBOutlet NSTextField *errorMessage;
 
 - (IBAction)openSheet:(id)sender;
 - (IBAction)closeSheet:(id)sender;
 - (IBAction)messageDelegateAndCloseSheet:(id)sender;
+- (void)setSheetErrorMessage:(NSString *)msg;
 
 // The optional delegate should implement the method:
 // - (BOOL)shouldCloseSheet:(id)sender

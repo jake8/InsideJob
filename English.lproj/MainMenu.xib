@@ -12,9 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
-			<integer value="1063"/>
 			<integer value="371"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1304,7 +1303,7 @@
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<object class="NSView" key="NSWindowView" id="20514219">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1313,6 +1312,7 @@
 							<int key="NSvFlags">266</int>
 							<string key="NSFrame">{{146, 52}, {284, 22}}</string>
 							<reference key="NSSuperview" ref="20514219"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="434808602">
 								<int key="NSCellFlags">-1804468671</int>
@@ -1330,6 +1330,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{350, 3}, {96, 25}}</string>
 							<reference key="NSSuperview" ref="20514219"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="246468348">
 								<int key="NSCellFlags">67239424</int>
@@ -1350,6 +1351,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{246, 3}, {96, 25}}</string>
 							<reference key="NSSuperview" ref="20514219"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="566042832">
 								<int key="NSCellFlags">67239424</int>
@@ -1370,6 +1372,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{17, 54}, {114, 17}}</string>
 							<reference key="NSSuperview" ref="20514219"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="759950735">
 								<int key="NSCellFlags">68288064</int>
@@ -1386,6 +1389,7 @@
 							<int key="NSvFlags">294</int>
 							<string key="NSFrame">{{10, 8}, {231, 14}}</string>
 							<reference key="NSSuperview" ref="20514219"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="964776726">
 								<int key="NSCellFlags">68288064</int>
@@ -1399,6 +1403,8 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{450, 94}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -1424,6 +1430,7 @@
 							<int key="NSvFlags">266</int>
 							<string key="NSFrame">{{116, 52}, {214, 22}}</string>
 							<reference key="NSSuperview" ref="151770795"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="604671974">
 								<int key="NSCellFlags">-1804468671</int>
@@ -1493,6 +1500,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{249, 3}, {96, 25}}</string>
 							<reference key="NSSuperview" ref="151770795"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="144367033">
 								<int key="NSCellFlags">67239424</int>
@@ -1513,6 +1521,7 @@
 							<int key="NSvFlags">294</int>
 							<string key="NSFrame">{{9, 8}, {131, 14}}</string>
 							<reference key="NSSuperview" ref="151770795"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="609459259">
 								<int key="NSCellFlags">68288064</int>
@@ -1529,6 +1538,7 @@
 							<int key="NSvFlags">289</int>
 							<string key="NSFrame">{{145, 3}, {96, 25}}</string>
 							<reference key="NSSuperview" ref="151770795"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="743179282">
 								<int key="NSCellFlags">67239424</int>
@@ -1549,6 +1559,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{17, 54}, {84, 17}}</string>
 							<reference key="NSSuperview" ref="151770795"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="263919313">
 								<int key="NSCellFlags">68288064</int>
@@ -1563,6 +1574,7 @@
 					</object>
 					<string key="NSFrameSize">{350, 91}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -2176,19 +2188,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">newPresetErrorLabel</string>
-						<reference key="source" ref="418653951"/>
+						<string key="label">errorMessage</string>
+						<reference key="source" ref="743173823"/>
 						<reference key="destination" ref="129836427"/>
 					</object>
-					<int key="connectionID">1101</int>
+					<int key="connectionID">1103</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">newItemErrorLabel</string>
-						<reference key="source" ref="760161335"/>
+						<string key="label">errorMessage</string>
+						<reference key="source" ref="262082572"/>
 						<reference key="destination" ref="571269567"/>
 					</object>
-					<int key="connectionID">1102</int>
+					<int key="connectionID">1104</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3699,7 +3711,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1102</int>
+			<int key="maxID">1104</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3727,6 +3739,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>delegate</string>
+							<string>errorMessage</string>
 							<string>inventoryController</string>
 							<string>parentWindow</string>
 							<string>sheet</string>
@@ -3734,6 +3747,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
+							<string>NSTextField</string>
 							<string>IJInventoryWindowController</string>
 							<string>NSWindow</string>
 							<string>NSWindow</string>
@@ -3791,7 +3805,6 @@
 							<string>inventoryView</string>
 							<string>itemSearchField</string>
 							<string>itemTableView</string>
-							<string>newItemErrorLabel</string>
 							<string>newItemField</string>
 							<string>newItemSheetController</string>
 							<string>observerObject</string>
@@ -3805,7 +3818,6 @@
 							<string>IJInventoryView</string>
 							<string>NSSearchField</string>
 							<string>NSTableView</string>
-							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>BWSheetController</string>
 							<string>id</string>
@@ -3861,7 +3873,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>inventoryController</string>
-							<string>newPresetErrorLabel</string>
 							<string>newPresetName</string>
 							<string>newPresetSheetController</string>
 							<string>presetMenu</string>
@@ -3869,7 +3880,6 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>IJInventoryWindowController</string>
-							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>BWSheetController</string>
 							<string>NSMenu</string>

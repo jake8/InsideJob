@@ -326,12 +326,12 @@
 {
 	short itemID = [newItemField intValue];
 	if (itemID == 0 || itemID > 3000) {
-		[newItemErrorLabel setStringValue:@"Invalid item id."];
+		[newItemSheetController setSheetErrorMessage:@"Invalid item id."];
 		return;
 	}
 	
 	[newItemSheetController closeSheet:self];
-	[newItemErrorLabel setStringValue:@""];
+	[newItemSheetController setSheetErrorMessage:@""];
 	[self addInventoryItem:itemID selectItem:YES];
 }
 
