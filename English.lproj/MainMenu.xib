@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="29"/>
 			<integer value="1063"/>
 			<integer value="371"/>
-			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1449,7 +1449,7 @@
 											<boolean value="YES"/>
 											<integer value="1040"/>
 											<reference ref="794904138"/>
-											<real value="2256"/>
+											<real value="3000"/>
 											<real value="0.0"/>
 											<string>-∞</string>
 											<string/>
@@ -1469,7 +1469,7 @@
 										<reference key="NSAttributes" ref="1019743789"/>
 									</object>
 									<real value="0.0" key="NS.min"/>
-									<real value="2256" key="NS.max"/>
+									<real value="3000" key="NS.max"/>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
