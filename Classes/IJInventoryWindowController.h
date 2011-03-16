@@ -19,6 +19,7 @@
 	
 	IBOutlet BWSheetController *newItemSheetController;
 	IBOutlet NSTextField *newItemField;
+	IBOutlet NSTextField *newItemErrorLabel;
 	
 	IJMinecraftLevel *level;
 	NSArray *inventory;

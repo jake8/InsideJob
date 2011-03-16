@@ -24,7 +24,7 @@
 	NSMutableArray *normalInventory;	
 	
 	IBOutlet NSTextField *newPresetName;
-	IBOutlet NSTextField *sheetErrorMessage;
+	IBOutlet NSTextField *newPresetErrorLabel;
 }
 
 @property (copy) NSArray *presetArray;

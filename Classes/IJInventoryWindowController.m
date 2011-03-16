@@ -325,11 +325,13 @@
 - (IBAction)addItem:(id)sender
 {
 	short itemID = [newItemField intValue];
-	if (itemID == 0) {
+	if (itemID == 0 || itemID > 3000) {
+		[newItemErrorLabel setStringValue:@"Invalid item id."];
 		return;
 	}
 	
 	[newItemSheetController closeSheet:self];
+	[newItemErrorLabel setStringValue:@""];
 	[self addInventoryItem:itemID selectItem:YES];
 }
 

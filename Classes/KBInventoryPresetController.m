@@ -46,7 +46,7 @@
 - (IBAction)savePreset:(id)sender
 {
 	if ([[newPresetName stringValue] isEqualToString:@""]) {
-		[sheetErrorMessage setStringValue:@"Fill in a preset name."];
+		[newPresetErrorLabel setStringValue:@"Fill in a preset name."];
 		return;
 	}
 	
@@ -54,7 +54,7 @@
 	NSString *presetPath = [folderPath stringByAppendingPathComponent:[newPresetName stringValue]];
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath: presetPath]) {
-		[sheetErrorMessage setStringValue:@"A preset with that name already exists."];
+		[newPresetErrorLabel setStringValue:@"A preset with that name already exists."];
 		return;
 	}
 	
@@ -74,7 +74,7 @@
 	[NSKeyedArchiver archiveRootObject:newPreset toFile:presetPath];
 	
 	[newPresetSheetController closeSheet:self];
-	[sheetErrorMessage setStringValue:@""];
+	[newPresetErrorLabel setStringValue:@""];
 	
 	[self reloadPresetList];
 }
