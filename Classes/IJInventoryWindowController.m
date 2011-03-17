@@ -188,7 +188,7 @@
 	NSMutableArray *newInventory = [NSMutableArray array];
 	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil]) {
 		for (IJInventoryItem *item in items) {
-			if (item.count > 0 && item.itemId > 0)
+			if ((item.count > 0 || item.count < 0) && item.itemId > 0)
 				[newInventory addObject:item];
 		}
 	}
@@ -306,10 +306,10 @@
 	 
 	 // Display the NSOpenPanel
 	 [openPanel beginWithCompletionHandler:^(NSInteger runResult){
-	 if (runResult == NSFileHandlingPanelOKButton) {
-	 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
-	 [self loadWorldAtPath:filePath];
-	 }
+		 if (runResult == NSFileHandlingPanelOKButton) {
+			 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
+			 [self loadWorldAtPath:filePath];
+		 }
 	 }];
 }
 
@@ -328,7 +328,7 @@
 - (IBAction)addItem:(id)sender
 {
 	short itemID = [newItemField intValue];
-	if (itemID == 0 || itemID > 3000 || itemID == -1) {
+	if (itemID <= 0 || itemID > 3000 || itemID == -1) {
 		[newItemSheetController setSheetErrorMessage:@"Invalid item id."];
 		return;
 	}
@@ -443,6 +443,7 @@
 		item.slot = slotOffset + itemIndex;
 		[theInventoryView setItems:itemArray];
 	}
+	NSLog(@"Edited");
 	[self setDocumentEdited:YES];
 }
 

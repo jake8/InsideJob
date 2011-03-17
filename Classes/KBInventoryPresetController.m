@@ -64,7 +64,7 @@
 	int index;
 	for (index = 0; index < [inventoryData count]; index++) {
 		IJInventoryItem *item = [inventoryData objectAtIndex:index];
-		if (item.count > 0 && item.itemId > 0) {
+		if ((item.count > 0 || item.count < 0) && item.itemId > 0) {
 			[newPreset addObject:item];
 		}
 	}
