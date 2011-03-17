@@ -9,6 +9,7 @@
 #import "KBScroller.h"
 
 @implementation KBScroller
+@synthesize usesAlternateStyle;
 
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -26,20 +27,46 @@
 
 - (void)drawRect:(NSRect)aRect
 {		
-	// Background
-	[[(NSScrollView *)[self superview] backgroundColor] set];
-	NSRectFill([self bounds]);
-	
 	NSGraphicsContext *ctx = [NSGraphicsContext currentContext];
-  [ctx saveGraphicsState];
+
+	
+	// Background
+	if (usesAlternateStyle) {
+		[ctx saveGraphicsState];
+		
+		NSGradient *outerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+																 [NSColor colorWithDeviceWhite:0.96f alpha:1.0f], 0.0f, 
+																 [NSColor colorWithDeviceWhite:0.92f alpha:1.0f], 1.0f, 
+																 nil];
+		
+		[outerGradient drawInRect:[self bounds] angle:0.0f];
+		[outerGradient release];
+		
+		NSBezierPath *line = [[NSBezierPath alloc] init];
+		[line moveToPoint:NSMakePoint(0, 0)];
+		[line lineToPoint:NSMakePoint(0, [self bounds].size.height)];
+		[line setLineWidth:1];
+		[[NSColor colorWithDeviceWhite:0.3f alpha:1.0f] set];
+		[line stroke];
+		[line release];
+		
+		[ctx restoreGraphicsState];
+	}
+	else {
+		[[(NSScrollView *)[self superview] backgroundColor] set];
+		NSRectFill([self bounds]);
+	}
 	
 	// Slot
-	NSBezierPath *bz = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect([self bounds], 4, 4) xRadius:4 yRadius:4];
-	[bz addClip];
+  [ctx saveGraphicsState];
+	
+	NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect([self bounds], 4, 4) xRadius:4 yRadius:4];
+	[path addClip];
 	[[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] set];
 	NSRectFill([self bounds]);
 	
 	[ctx restoreGraphicsState];
+	
 	
 	// Knob
 	[ctx saveGraphicsState];

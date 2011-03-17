@@ -112,11 +112,13 @@
 		
 		NSDictionary *fileAttr = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:NULL];
 		
-		if (![[fileAttr valueForKey:NSFileType] isEqualToString:NSFileTypeRegular])
+		if (![[fileAttr valueForKey:NSFileType] isEqualToString:NSFileTypeRegular]) {
 			continue;
+		}
 		
-		if ([fileName hasPrefix:@"."])
+		if ([fileName hasPrefix:@"."]) {
 			continue;
+		}
 		
 		[presetArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 														fileName, @"Name",
@@ -155,11 +157,12 @@
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem
 {
-	if (anItem.action == @selector(loadPreset:))
+	if (anItem.action == @selector(loadPreset:)) {
 		return inventoryController.inventory != nil;
-	if (anItem.action == @selector(deletePreset:))
+	}
+	if (anItem.action == @selector(deletePreset:)) {
 		return inventoryController.inventory != nil;
-
+	}
 	return YES;
 }
 

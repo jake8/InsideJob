@@ -66,7 +66,8 @@
 	{
 		[attemptedLoadWorldPath release];
 		attemptedLoadWorldPath = [levelPath copy];
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), nil, @"Load", 
+		// Note: We use the didDismiss selector so that any subsequent alert sheets don't bugger up
+		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), @"Load", 
 																	 @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
@@ -123,30 +124,29 @@
 	
 	
 	// Add placeholder inventory items:
-	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++)
+	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++) {
 		[quickInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotQuickFirst + i]];
+	}
 	
-	for (int i = 0; i < IJInventorySlotNormalLast + 1 - IJInventorySlotNormalFirst; i++)
+	for (int i = 0; i < IJInventorySlotNormalLast + 1 - IJInventorySlotNormalFirst; i++) {
 		[normalInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotNormalFirst + i]];
+	}
 	
-	for (int i = 0; i < IJInventorySlotArmorLast + 1 - IJInventorySlotArmorFirst; i++)
+	for (int i = 0; i < IJInventorySlotArmorLast + 1 - IJInventorySlotArmorFirst; i++) {
 		[armorInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotArmorFirst + i]];
+	}
 	
 	
 	// Overwrite the placeholders with actual inventory:
-	
-	for (IJInventoryItem *item in inventory)
-	{
+	for (IJInventoryItem *item in inventory) {
 		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast)
 		{
 			[quickInventory replaceObjectAtIndex:item.slot - IJInventorySlotQuickFirst withObject:item];
 		}
-		else if (IJInventorySlotNormalFirst <= item.slot && item.slot <= IJInventorySlotNormalLast)
-		{
+		else if (IJInventorySlotNormalFirst <= item.slot && item.slot <= IJInventorySlotNormalLast) {
 			[normalInventory replaceObjectAtIndex:item.slot - IJInventorySlotNormalFirst withObject:item];
 		}
-		else if (IJInventorySlotArmorFirst <= item.slot && item.slot <= IJInventorySlotArmorLast)
-		{
+		else if (IJInventorySlotArmorFirst <= item.slot && item.slot <= IJInventorySlotArmorLast) {
 			[armorInventory replaceObjectAtIndex:item.slot - IJInventorySlotArmorFirst withObject:item];
 		}
 	}
@@ -304,7 +304,7 @@
 	 [openPanel setAllowsMultipleSelection:NO];
 	 [openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/" stringByExpandingTildeInPath]]];
 	 
-	 // Display the NSOpenPanel -- beginSheetModalForWindow:self.window completionHandler
+	 // Display the NSOpenPanel
 	 [openPanel beginWithCompletionHandler:^(NSInteger runResult){
 	 if (runResult == NSFileHandlingPanelOKButton) {
 	 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
@@ -317,7 +317,8 @@
 {
 	if ([self isDocumentEdited])
 	{
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), nil, @"Select", 
+		// Note: We use the didDismiss selector so that any subsequent alert sheets don't bugger up
+		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), @"Select", 
 																	 @"Your changes will be lost if you do not save them.");
 		return;
 	}
@@ -359,13 +360,15 @@
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem
 {
-	if (anItem.action == @selector(saveDocument:))
+	if (anItem.action == @selector(saveDocument:)) {
 		return inventory != nil;
-	if (anItem.action == @selector(reloadWorldInformation:))
+	}
+	if (anItem.action == @selector(reloadWorldInformation:)) {
 		return inventory != nil;
-	if (anItem.action == @selector(showWorldSelector:))
+	}
+	if (anItem.action == @selector(showWorldSelector:)) {
 		return inventory != nil;
-		
+	}
 	return YES;
 }
 
@@ -388,13 +391,15 @@
 
 - (IJInventoryView *)inventoryViewForItemArray:(NSMutableArray *)theItemArray
 {
-	if (theItemArray == normalInventory)
+	if (theItemArray == normalInventory) {
 		return inventoryView;
-	if (theItemArray == quickInventory)
+	}
+	if (theItemArray == quickInventory) {
 		return quickView;
-	if (theItemArray == armorInventory)
+	}
+	if (theItemArray == armorInventory) {
 		return armorView;
-	
+	}
 	return nil;
 }
 
@@ -721,7 +726,7 @@
 {
 	if ([self isDocumentEdited]) {
 		// Note: We use the didDismiss selector because the sheet needs to be closed in order for performClose: to work.
-		NSBeginInformationalAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, 
+		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, 
 																	 @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
