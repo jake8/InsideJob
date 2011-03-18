@@ -1,5 +1,5 @@
 //
-//  KBWorldCollectionController.h
+//  IJWorldCollectionController.h
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
@@ -10,7 +10,7 @@
 
 @class IJInventoryWindowController;
 
-@interface KBWorldCollectionController : NSObject {
+@interface IJWorldCollectionController : NSObject {
 	IBOutlet NSArrayController *worldArrayController;
 	IBOutlet NSButton *chooseButton;
 	IBOutlet IJInventoryWindowController *InventoryWindowController;
@@ -18,9 +18,10 @@
 	NSMutableArray *worldArray;
 }
 
-@property (copy) NSArray *worldArray;
-
 - (void)openWorldAtPath:(NSString *)path;
 - (IBAction)openSelectedWorld:(id)sender;
+
+- (void)loadWorldData;
+
 
 @end

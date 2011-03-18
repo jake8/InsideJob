@@ -6,15 +6,14 @@
 //  Copyright 2011 Ben K. All rights reserved.
 //
 
-#import "KBInventoryPresetController.h"
+#import "IJInventoryPresetController.h"
 #import "IJInventoryWindowController.h"
 #import "IJInventoryItem.h"
 #import "BWSheetController.h"
 
 
-@implementation KBInventoryPresetController
+@implementation IJInventoryPresetController
 @synthesize presetArray;
-
 
 
 #pragma mark -

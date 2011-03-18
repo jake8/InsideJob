@@ -1,5 +1,5 @@
 //
-//  KBCollectionView.h
+//  IJCollectionView.h
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface KBCollectionView : NSView {
+@interface IJCollectionView : NSView {
 	
 	IBOutlet id delegate;
 	

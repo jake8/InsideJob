@@ -1,15 +1,15 @@
 //
-//  KBCollectionView.m
+//  IJCollectionView.m
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
 //  Copyright 2011 Ben K. All rights reserved.
 //
 
-#import "KBCollectionView.h"
+#import "IJCollectionView.h"
 
 
-@implementation KBCollectionView
+@implementation IJCollectionView
 
 - (NSView *)hitTest:(NSPoint)aPoint
 {

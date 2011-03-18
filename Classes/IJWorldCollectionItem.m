@@ -1,15 +1,16 @@
 //
-//  KBWorldCollectionItem.m
+//  IJWorldCollectionItem.m
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
 //  Copyright 2011 Ben K. All rights reserved.
 //
 
-#import "KBWorldCollectionItem.h"
+#import "IJWorldCollectionItem.h"
 
 
-@implementation KBWorldCollectionItem
+@implementation IJWorldCollectionItem
+
 
 - (id)init
 {
@@ -19,8 +20,6 @@
 	}
 	return self;
 }
-
-
 
 -(id)copyWithZone:(NSZone *)zone
 {

@@ -1,5 +1,5 @@
 //
-//  KBWorldCollectionItem.h
+//  IJWorldCollectionItem.h
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/14.
@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface KBWorldCollectionItem : NSCollectionViewItem {
+@interface IJWorldCollectionItem : NSCollectionViewItem {
 	
 	IBOutlet NSTextField *worldName;
 	IBOutlet NSTextField *worldMeta;

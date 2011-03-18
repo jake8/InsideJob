@@ -1,5 +1,6 @@
 # Mac OS X Finder and whatnot
 .DS_Store
+*.psd
 
 # Sparkle distribution Private Key (Don't check me in!)
 dsa_priv.pem

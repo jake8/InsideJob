@@ -1,5 +1,5 @@
 //
-//  KBInventoryPresetController.h
+//  IJInventoryPresetController.h
 //  InsideJob
 //
 //  Created by Ben K on 2011/03/15.
@@ -11,7 +11,7 @@
 @class IJInventoryWindowController;
 @class BWSheetController;
 
-@interface KBInventoryPresetController : NSObject {
+@interface IJInventoryPresetController : NSObject {
 	
 	IBOutlet IJInventoryWindowController *inventoryController;
 	IBOutlet BWSheetController *newPresetSheetController;
