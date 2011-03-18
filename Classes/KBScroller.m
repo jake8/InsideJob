@@ -46,7 +46,7 @@
 		[line moveToPoint:NSMakePoint(0, 0)];
 		[line lineToPoint:NSMakePoint(0, [self bounds].size.height)];
 		[line setLineWidth:1];
-		[[NSColor colorWithDeviceWhite:0.3f alpha:1.0f] set];
+		[[NSColor colorWithDeviceWhite:0.6f alpha:1.0f] set];
 		[line stroke];
 		[line release];
 		
@@ -86,12 +86,7 @@
 		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:knobRect xRadius:4 yRadius:4];
 		[path addClip];
 		
-		if ([[[self superview] window] isKeyWindow]) {
-			[[NSColor colorWithCalibratedRed:0.70 green:0.70 blue:0.70 alpha:0.80] set];
-		}
-		else {
-			[[NSColor colorWithCalibratedRed:0.80 green:0.80 blue:0.80 alpha:0.80] set];
-		}
+		[[NSColor colorWithCalibratedWhite:0.5 alpha:1.0] set];
 		
 		NSRectFill(knobRect);
 	}
@@ -103,12 +98,7 @@
 		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:knobRect xRadius:4 yRadius:4];
 		[path addClip];
 		
-		if ([[[self superview] window] isKeyWindow]) {
-			[[NSColor colorWithCalibratedRed:0.70 green:0.70 blue:0.70 alpha:0.80] set];
-		}
-		else {
-			[[NSColor colorWithCalibratedRed:0.80 green:0.80 blue:0.80 alpha:0.80] set];
-		}
+		[[NSColor colorWithCalibratedWhite:0.5 alpha:1.0] set];
 		
 		NSRectFill(knobRect);
 	}

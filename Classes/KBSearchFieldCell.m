@@ -8,7 +8,7 @@
 
 #import "KBSearchFieldCell.h"
 
-static NSImage *leftCap, *centerFill, *rightCap, *leftCapD, *centerFillD, *rightCapD;
+static NSImage *leftCap, *centerFill, *rightCap;
 
 @implementation KBSearchFieldCell
 
@@ -24,10 +24,6 @@ static NSImage *leftCap, *centerFill, *rightCap, *leftCapD, *centerFillD, *right
 		leftCap = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldLC.png"]];
 		centerFill = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldCF.png"]];
 		rightCap = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldRC.png"]];
-		
-		leftCapD = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldLC_disabled.png"]];
-		centerFillD = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldCF_disabled.png"]];
-		rightCapD = [[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:@"KBSTextFieldRC_disabled.png"]];
 	}
 		return self;
 }
@@ -41,11 +37,7 @@ static NSImage *leftCap, *centerFill, *rightCap, *leftCapD, *centerFillD, *right
 	
 	//Background
 	[ctx saveGraphicsState];
-	if([[[self controlView] window] isKeyWindow]) {
 		NSDrawThreePartImage(frame,leftCap,centerFill,rightCap,NO,NSCompositeSourceOver,1.0,YES);
-	} else {
-		NSDrawThreePartImage(frame,leftCapD,centerFillD,rightCapD,NO,NSCompositeSourceOver,1.0,YES);
-	}
 	[ctx restoreGraphicsState];
 	
 	// If we have focus, draw a focus ring around the entire cellFrame.
@@ -94,9 +86,6 @@ static NSImage *leftCap, *centerFill, *rightCap, *leftCapD, *centerFillD, *right
 	[leftCap release];
 	[rightCap release];
 	[centerFill release];
-	[leftCapD release];
-	[rightCapD release];
-	[centerFillD release];
 	[super dealloc];
 }
 

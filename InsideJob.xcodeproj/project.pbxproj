@@ -43,11 +43,8 @@
 		AEE84E77132DD3710022DD50 /* KBSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E71132DD3710022DD50 /* KBSearchField.m */; };
 		AEE84E78132DD3710022DD50 /* KBSearchFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */; };
 		AEE84E83132DD38F0022DD50 /* KBSTextFieldCF.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */; };
-		AEE84E84132DD38F0022DD50 /* KBSTextFieldCF_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */; };
 		AEE84E85132DD38F0022DD50 /* KBSTextFieldLC.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */; };
-		AEE84E86132DD38F0022DD50 /* KBSTextFieldLC_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */; };
 		AEE84E87132DD38F0022DD50 /* KBSTextFieldRC.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */; };
-		AEE84E88132DD38F0022DD50 /* KBSTextFieldRC_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,11 +112,8 @@
 		AEE84E72132DD3710022DD50 /* KBSearchFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBSearchFieldCell.h; sourceTree = "<group>"; };
 		AEE84E73132DD3710022DD50 /* KBSearchFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBSearchFieldCell.m; sourceTree = "<group>"; };
 		AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldCF.png; sourceTree = "<group>"; };
-		AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldCF_disabled.png; sourceTree = "<group>"; };
 		AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldLC.png; sourceTree = "<group>"; };
-		AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldLC_disabled.png; sourceTree = "<group>"; };
 		AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldRC.png; sourceTree = "<group>"; };
-		AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBSTextFieldRC_disabled.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,11 +325,8 @@
 			isa = PBXGroup;
 			children = (
 				AEE84E7D132DD38F0022DD50 /* KBSTextFieldCF.png */,
-				AEE84E7E132DD38F0022DD50 /* KBSTextFieldCF_disabled.png */,
 				AEE84E7F132DD38F0022DD50 /* KBSTextFieldLC.png */,
-				AEE84E80132DD38F0022DD50 /* KBSTextFieldLC_disabled.png */,
 				AEE84E81132DD38F0022DD50 /* KBSTextFieldRC.png */,
-				AEE84E82132DD38F0022DD50 /* KBSTextFieldRC_disabled.png */,
 			);
 			path = "Safari TextField";
 			sourceTree = "<group>";
@@ -401,11 +392,8 @@
 				66BC077312628257005A23F4 /* ItemPropertiesView.xib in Resources */,
 				663803B2131769E90015CFAD /* blockNotFound.png in Resources */,
 				AEE84E83132DD38F0022DD50 /* KBSTextFieldCF.png in Resources */,
-				AEE84E84132DD38F0022DD50 /* KBSTextFieldCF_disabled.png in Resources */,
 				AEE84E85132DD38F0022DD50 /* KBSTextFieldLC.png in Resources */,
-				AEE84E86132DD38F0022DD50 /* KBSTextFieldLC_disabled.png in Resources */,
 				AEE84E87132DD38F0022DD50 /* KBSTextFieldRC.png in Resources */,
-				AEE84E88132DD38F0022DD50 /* KBSTextFieldRC_disabled.png in Resources */,
 				AE7C5D66132ECB8D0068F958 /* WorldCollectionItem.xib in Resources */,
 				AE7C5D8D132ECEC90068F958 /* World.png in Resources */,
 			);
