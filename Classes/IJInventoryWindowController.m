@@ -108,6 +108,12 @@
 	[self willChangeValueForKey:@"worldTime"];
 	[level release];
 	level = nil;
+	
+	for (IJInventoryItem *item in inventory) {
+		[item removeObserver:self forKeyPath:@"count"];
+		[item removeObserver:self forKeyPath:@"damage"];
+	}	
+	
 	[inventory release];
 	inventory = nil;
 	[self didChangeValueForKey:@"worldTime"];
@@ -139,6 +145,10 @@
 	
 	// Overwrite the placeholders with actual inventory:
 	for (IJInventoryItem *item in inventory) {
+		// Add a KVO so that we can set the document as edited when the count or damage values are changed.
+		[item addObserver:self forKeyPath:@"count" options:0 context:@"KVO_COUNT_CHANGED"];
+		[item addObserver:self forKeyPath:@"damage" options:0 context:@"KVO_DAMAGE_CHANGED"];
+		
 		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast)
 		{
 			[quickInventory replaceObjectAtIndex:item.slot - IJInventorySlotQuickFirst withObject:item];
@@ -188,7 +198,7 @@
 	NSMutableArray *newInventory = [NSMutableArray array];
 	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil]) {
 		for (IJInventoryItem *item in items) {
-			if ((item.count > 0 || item.count < 0) && item.itemId > 0)
+			if ((item.count > 0 || item.count == -1) && item.itemId > 0)
 				[newInventory addObject:item];
 		}
 	}
@@ -479,6 +489,7 @@
 		[propertiesWindow setBackgroundColor:[NSColor controlBackgroundColor]];
 		[propertiesWindow setViewMargin:4.0];
 		[propertiesWindow setAlphaValue:1.0];
+		[propertiesWindow setArrowHeight:10];
 		[[self window] addChildWindow:propertiesWindow ordered:NSWindowAbove];
 	}
 	if (observerObject) {
@@ -489,8 +500,12 @@
 																		queue:[NSOperationQueue mainQueue]
 																   usingBlock:^(NSNotification *notification) {
 																	   [propertiesViewController commitEditing];
-																	   if (item.count == 0)
+																	   if (item.count == 0) {
 																		   item.itemId = 0;
+																		 }
+																		 if (item.count > 64 || item.count < -1) {
+																			 item.count = -1;
+																		 }
 																	   [theInventoryView reloadItemAtIndex:itemIndex];
 																	   [propertiesWindow setAlphaValue:0.0];
 																   }];
@@ -500,6 +515,22 @@
 	[propertiesWindow setAlphaValue:1.0];
 }
 
+#pragma mark -
+#pragma mark IJInventoryItemDelegate
+
+- (void)observeValueForKeyPath:(NSString *)keyPath 
+                      ofObject:(id)object 
+                        change:(NSDictionary *)change 
+                       context:(void *)context;
+{
+	if(context == @"KVO_COUNT_CHANGED"){
+		[self setDocumentEdited:YES];
+	}	
+	if(context == @"KVO_DAMAGE_CHANGED"){
+		[self setDocumentEdited:YES];
+	}	
+}
+	
 
 #pragma mark -
 #pragma mark Inventory
@@ -525,6 +556,11 @@
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
 	
+	for (IJInventoryItem *item in inventory) {
+		[item removeObserver:self forKeyPath:@"count"];
+		[item removeObserver:self forKeyPath:@"damage"];
+	}	
+	
 	[inventory release];
 	inventory = nil;
 	
@@ -542,19 +578,18 @@
 	
 	
 	// Overwrite the placeholders with actual inventory:
-	
-	for (IJInventoryItem *item in inventory)
-	{
-		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast)
-		{
+	for (IJInventoryItem *item in inventory) {
+		// Add a KVO so that we can set the document as edited when the count or damage values are changed.
+		[item addObserver:self forKeyPath:@"count" options:0 context:@"KVO_COUNT_CHANGED"];
+		[item addObserver:self forKeyPath:@"damage" options:0 context:@"KVO_DAMAGE_CHANGED"];
+
+		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast) {
 			[quickInventory replaceObjectAtIndex:item.slot - IJInventorySlotQuickFirst withObject:item];
 		}
-		else if (IJInventorySlotNormalFirst <= item.slot && item.slot <= IJInventorySlotNormalLast)
-		{
+		else if (IJInventorySlotNormalFirst <= item.slot && item.slot <= IJInventorySlotNormalLast) {
 			[normalInventory replaceObjectAtIndex:item.slot - IJInventorySlotNormalFirst withObject:item];
 		}
-		else if (IJInventorySlotArmorFirst <= item.slot && item.slot <= IJInventorySlotArmorLast)
-		{
+		else if (IJInventorySlotArmorFirst <= item.slot && item.slot <= IJInventorySlotArmorLast) {
 			[armorInventory replaceObjectAtIndex:item.slot - IJInventorySlotArmorFirst withObject:item];
 		}
 	}
