@@ -12,8 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
+			<integer value="1064"/>
 			<integer value="371"/>
+			<integer value="1011"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -447,6 +448,14 @@
 									<string key="NSTitle">Add Item by ID</string>
 									<string key="NSKeyEquiv">n</string>
 									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="161758006">
+									<reference key="NSMenu" ref="505230865"/>
+									<string key="NSTitle">Copy World Seed</string>
+									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
@@ -1043,28 +1052,28 @@
 											<object class="NSCustomView" id="784892978">
 												<reference key="NSNextResponder" ref="949727834"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{15, 221}, {40, 160}}</string>
+												<string key="NSFrame">{{16, 220}, {40, 160}}</string>
 												<reference key="NSSuperview" ref="949727834"/>
 												<string key="NSClassName">IJInventoryView</string>
 											</object>
 											<object class="NSCustomView" id="183792805">
 												<reference key="NSNextResponder" ref="949727834"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{15, 45}, {360, 40}}</string>
+												<string key="NSFrame">{{16, 44}, {360, 40}}</string>
 												<reference key="NSSuperview" ref="949727834"/>
 												<string key="NSClassName">IJInventoryView</string>
 											</object>
 											<object class="NSCustomView" id="30251356">
 												<reference key="NSNextResponder" ref="949727834"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{15, 93}, {360, 120}}</string>
+												<string key="NSFrame">{{16, 92}, {360, 120}}</string>
 												<reference key="NSSuperview" ref="949727834"/>
 												<string key="NSClassName">IJInventoryView</string>
 											</object>
 											<object class="NSTextField" id="924742053">
 												<reference key="NSNextResponder" ref="949727834"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{235, 361}, {40, 17}}</string>
+												<string key="NSFrame">{{232, 360}, {40, 17}}</string>
 												<reference key="NSSuperview" ref="949727834"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="421186712">
@@ -1080,7 +1089,7 @@
 											<object class="NSTextField" id="395301483">
 												<reference key="NSNextResponder" ref="949727834"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{290, 359}, {85, 22}}</string>
+												<string key="NSFrame">{{287, 358}, {85, 22}}</string>
 												<reference key="NSSuperview" ref="949727834"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="52955396">
@@ -1414,7 +1423,7 @@
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<object class="NSView" key="NSWindowView" id="151770795">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1437,7 +1446,6 @@
 											<string>allowsFloats</string>
 											<string>formatterBehavior</string>
 											<string>locale</string>
-											<string>maximum</string>
 											<string>minimum</string>
 											<string>negativeInfinitySymbol</string>
 											<string>nilSymbol</string>
@@ -1448,7 +1456,6 @@
 											<boolean value="YES"/>
 											<integer value="1040"/>
 											<reference ref="794904138"/>
-											<real value="3000"/>
 											<real value="0.0"/>
 											<string>-∞</string>
 											<string/>
@@ -1468,7 +1475,7 @@
 										<reference key="NSAttributes" ref="1019743789"/>
 									</object>
 									<real value="0.0" key="NS.min"/>
-									<real value="3000" key="NS.max"/>
+									<reference key="NS.max" ref="66025646"/>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
@@ -1561,6 +1568,7 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{350, 91}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -2187,6 +2195,14 @@
 						<reference key="destination" ref="571269567"/>
 					</object>
 					<int key="connectionID">1104</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">copyWorldSeed:</string>
+						<reference key="source" ref="760161335"/>
+						<reference key="destination" ref="161758006"/>
+					</object>
+					<int key="connectionID">1132</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2934,6 +2950,7 @@
 							<reference ref="878337403"/>
 							<reference ref="1023867729"/>
 							<reference ref="255222180"/>
+							<reference ref="161758006"/>
 						</object>
 						<reference key="parent" ref="254580940"/>
 					</object>
@@ -3192,6 +3209,11 @@
 						<reference key="object" ref="609459259"/>
 						<reference key="parent" ref="571269567"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1131</int>
+						<reference key="object" ref="161758006"/>
+						<reference key="parent" ref="505230865"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3254,6 +3276,7 @@
 					<string>1099.CustomClassName</string>
 					<string>1099.IBPluginDependency</string>
 					<string>1100.IBPluginDependency</string>
+					<string>1131.IBPluginDependency</string>
 					<string>129.IBPluginDependency</string>
 					<string>129.ImportedFromIB2</string>
 					<string>130.IBPluginDependency</string>
@@ -3322,7 +3345,6 @@
 					<string>298.IBPluginDependency</string>
 					<string>371.IBEditorWindowLastContentRect</string>
 					<string>371.IBPluginDependency</string>
-					<string>371.IBViewEditorWindowController.showingLayoutRectangles</string>
 					<string>371.IBWindowTemplateEditedContentRect</string>
 					<string>371.NSWindowTemplate.visibleAtLaunch</string>
 					<string>371.editorWindowContentRectSynchronizationRect</string>
@@ -3434,7 +3456,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{635, 763}, {192, 73}}</string>
+					<string>{{635, 743}, {205, 93}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3482,6 +3504,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>KBLabel</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3545,14 +3568,13 @@
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{585, 773}, {231, 63}}</string>
+					<string>{{585, 793}, {231, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{475, 832}, {234, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{383, 87}, {650, 396}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
 					<string>{{383, 87}, {650, 396}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
@@ -3699,7 +3721,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1115</int>
+			<int key="maxID">1132</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3806,6 +3828,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addItem:</string>
+							<string>copyWorldSeed:</string>
 							<string>itemTableViewDoubleClicked:</string>
 							<string>makeSearchFieldFirstResponder:</string>
 							<string>openWorld:</string>
@@ -3815,6 +3838,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

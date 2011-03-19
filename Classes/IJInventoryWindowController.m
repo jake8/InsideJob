@@ -106,8 +106,10 @@
 	[armorView setItems:armorInventory];
 	
 	[self willChangeValueForKey:@"worldTime"];
+
 	[level release];
 	level = nil;
+	
 	
 	for (IJInventoryItem *item in inventory) {
 		[item removeObserver:self forKeyPath:@"count"];
@@ -337,8 +339,8 @@
 
 - (IBAction)addItem:(id)sender
 {
-	short itemID = [newItemField intValue];
-	if (itemID <= 0 || itemID > 3000 || itemID == -1) {
+	int16_t itemID = [newItemField intValue];
+	if (itemID <= 0 || itemID > 8000) {
 		[newItemSheetController setSheetErrorMessage:@"Invalid item id."];
 		return;
 	}
@@ -346,6 +348,17 @@
 	[newItemSheetController closeSheet:self];
 	[newItemSheetController setSheetErrorMessage:@""];
 	[self addInventoryItem:itemID selectItem:YES];
+}
+
+- (IBAction)copyWorldSeed:(id)sender
+{
+	
+	NSString *worldSeed = [NSString stringWithFormat:@"%@",[level worldSeedContainer].numberValue];
+	
+	NSPasteboard *pb = [NSPasteboard generalPasteboard];
+	NSArray *types = [NSArray arrayWithObjects:NSStringPboardType, nil];
+	[pb declareTypes:types owner:self];
+	[pb setString:worldSeed forType:NSStringPboardType];
 }
 
 - (void)saveDocument:(id)sender
@@ -377,6 +390,9 @@
 		return inventory != nil;
 	}
 	if (anItem.action == @selector(showWorldSelector:)) {
+		return inventory != nil;
+	}
+	if (anItem.action == @selector(copyWorldSeed:)) {
 		return inventory != nil;
 	}
 	return YES;

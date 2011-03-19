@@ -30,7 +30,6 @@
 	IJInventoryView *quickView;
 	IJInventoryView *armorView;
 	
-	
 	NSMutableArray *armorInventory;
 	NSMutableArray *quickInventory;
 	NSMutableArray *normalInventory;
@@ -70,6 +69,7 @@
 - (IBAction)itemTableViewDoubleClicked:(id)sender;
 
 - (IBAction)addItem:(id)sender;
+- (IBAction)copyWorldSeed:(id)sender;
 
 - (void)saveWorld;
 - (BOOL)loadWorldAtPath:(NSString *)path;
