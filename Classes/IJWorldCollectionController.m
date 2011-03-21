@@ -17,6 +17,7 @@
 	worldArray = [[NSMutableArray alloc] init];
 	//Add a new observer to the array controller of the collection view
 	[worldArrayController addObserver:self forKeyPath:@"selectionIndexes" options:NSKeyValueObservingOptionNew context:nil];
+	[worldArrayController setContent:worldArray];
 	
 	[self loadWorldData];
 	
@@ -26,11 +27,10 @@
 	}
 }
 
-//Observer for the collection view array controller selection: "selectionIndexes"
+// Observe the worldArray controller selection and change enabled state of the choose button accordingly.
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if ([keyPath isEqualTo:@"selectionIndexes"]) {
-		//True if in the array controller of the collection view really exists at least a selected object
 		if ([[worldArrayController selectedObjects] count] > 0) {
 			[chooseButton setEnabled:YES];
 		}
@@ -52,42 +52,62 @@
 	[InventoryWindowController loadWorldAtPath:path];
 }
 
+
+- (void)reloadWorldData
+{
+	//[worldArray removeAllObjects];
+	//[worldArrayController setContent:worldArray];
+	//[self loadWorldData];
+}
+
 - (void)loadWorldData
 {
 	NSString *path = [@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath];
 	NSArray *folderArray = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL] retain];
 	
+	
+	// Worlds in 'application support/minecraft/saves/'
 	int index;
 	for (index = 0; index < [folderArray count]; index++) {
 		NSString *fileName = [folderArray objectAtIndex:index];
 		NSString *filePath = [path stringByAppendingPathComponent:fileName];
-		if ([fileName hasPrefix:@"."]) {
-			continue;
-		}
 		
-		NSDictionary *fileAttr = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:NULL];
-		
-		if (![[fileAttr valueForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
-			continue;
-		}
-		
-		NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-		[formatter setDateFormat:@"'Created:' MMM d yyyy 'at' h:m:s a"];
-		NSString *fileMeta = [formatter stringFromDate:[fileAttr valueForKey:NSFileCreationDate]];
-		
-		
-		int arrayIndex = [[worldArrayController arrangedObjects] count];
-		[worldArrayController insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-																				fileName, @"Name",
-																				fileMeta, @"Meta",
-																				[NSImage imageNamed:@"World"], @"Icon",
-																				self, @"Delegate",
-																				filePath, @"Path",
-																				nil] 
-								 atArrangedObjectIndex:arrayIndex];
+		[self addPathToCollection:filePath withImage:[NSImage imageNamed:@"World"]];		
 	}
+		
 	[worldArrayController	setSelectionIndex:0];
 	[folderArray release];
+}
+
+- (void)addPathToCollection:(NSString *)path withImage:(NSImage *)icon
+{
+	NSString *fileName = [path lastPathComponent];
+	NSDictionary *fileAttr = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
+		
+	if ([fileName hasPrefix:@"."]) {
+		return;
+	}
+	else if (![[fileAttr valueForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
+		return;
+	}
+	else if (![[NSFileManager defaultManager] fileExistsAtPath:[path stringByAppendingPathComponent:@"level.dat"]]) {
+		return;
+	}
+	
+	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+	[formatter setDateFormat:@"'Created:' MMM d yyyy 'at' h:m:s a"];
+	NSString *fileMeta = [formatter stringFromDate:[fileAttr valueForKey:NSFileCreationDate]];
+	
+	
+	int arrayIndex = [[worldArrayController arrangedObjects] count];
+	[worldArrayController insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
+																			fileName, @"Name",
+																			fileMeta, @"Meta",
+																			icon, @"Icon",
+																			self, @"Delegate",
+																			path, @"Path",
+																			nil] 
+							 atArrangedObjectIndex:arrayIndex];
 }
 
 - (void)dealloc

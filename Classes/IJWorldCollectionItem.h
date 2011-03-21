@@ -11,16 +11,20 @@
 
 @interface IJWorldCollectionItem : NSCollectionViewItem {
 	
-	IBOutlet NSTextField *worldName;
-	IBOutlet NSTextField *worldMeta;
-	IBOutlet NSImageView *worldIcon;
+	NSString *worldName;
+	NSString *worldMeta;
+	NSImage *worldIcon;
 	
 	id delegate;
 	NSString *worldPath;
 	
 	IBOutlet NSBox *selectionBox;
-
 }
+
+@property (nonatomic, retain) NSString *worldName;
+@property (nonatomic, retain) NSString *worldMeta;
+@property (nonatomic, retain) NSImage *worldIcon;
+
 
 - (id)copyWithZone:(NSZone *)zone;
 - (void)setRepresentedObject:(id)object;

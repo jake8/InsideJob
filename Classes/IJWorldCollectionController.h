@@ -21,7 +21,10 @@
 - (void)openWorldAtPath:(NSString *)path;
 - (IBAction)openSelectedWorld:(id)sender;
 
+- (void)reloadWorldData;
 - (void)loadWorldData;
+
+- (void)addPathToCollection:(NSString *)path withImage:(NSImage *)icon;
 
 
 @end

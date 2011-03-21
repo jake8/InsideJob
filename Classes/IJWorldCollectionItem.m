@@ -10,7 +10,9 @@
 
 
 @implementation IJWorldCollectionItem
-
+@synthesize worldName;
+@synthesize worldMeta;
+@synthesize worldIcon;
 
 - (id)init
 {
@@ -37,16 +39,12 @@
 	
 	NSDictionary* data	= (NSDictionary*) [self representedObject];	
 	
-	NSString* newName	= (NSString*)[data valueForKey:@"Name"];	
-	NSString* newMeta	= (NSString*)[data valueForKey:@"Meta"];
-	NSImage* newIcon	= (NSImage*)[data valueForKey:@"Icon"];
+	self.worldName	= (NSString*)[data valueForKey:@"Name"];	
+	self.worldMeta	= (NSString*)[data valueForKey:@"Meta"];
+	self.worldIcon	= (NSImage*)[data valueForKey:@"Icon"];
 	worldPath = (NSString*)[data valueForKey:@"Path"];
 	delegate = [data valueForKey:@"Delegate"];
 	
-	[worldName setStringValue:newName];
-	[worldMeta setStringValue:newMeta];
-	[worldIcon setImage:newIcon];
-
 }
 
 -(void)setSelected:(BOOL)flag
