@@ -33,6 +33,12 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
+#### 1.0.5 Beta - March 23, 2011
+
+- Recently opened worlds now display in the world selector.
+- Now supports negative item numbers.
+- New experimental 'Copy World Seed', menu item.
+
 #### 1.0.4 - March 16, 2011
 
 - New UI, added a world selector.
