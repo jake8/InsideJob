@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="371"/>
 			<integer value="1063"/>
 			<integer value="1011"/>
-			<integer value="927"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -686,8 +686,9 @@
 													<string key="NSContents">Choose</string>
 													<reference key="NSSupport" ref="731765667"/>
 													<reference key="NSControlView" ref="767558781"/>
-													<int key="NSButtonFlags">-2038152961</int>
+													<int key="NSButtonFlags">-2038021889</int>
 													<int key="NSButtonFlags2">163</int>
+													<reference key="NSAlternateImage" ref="731765667"/>
 													<string key="NSAlternateContents"/>
 													<string key="NSKeyEquivalent"/>
 													<int key="NSPeriodicDelay">400</int>
@@ -3862,17 +3863,8 @@
 					<string key="className">IJWorldCollectionItem</string>
 					<string key="superclassName">NSCollectionViewItem</string>
 					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>delegate</string>
-							<string>selectionBox</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>NSBox</string>
-						</object>
+						<string key="NS.key.0">delegate</string>
+						<string key="NS.object.0">id</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>

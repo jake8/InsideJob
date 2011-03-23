@@ -18,7 +18,6 @@
 	id delegate;
 	NSString *worldPath;
 	
-	IBOutlet NSBox *selectionBox;
 }
 
 @property (nonatomic, retain) NSString *worldName;

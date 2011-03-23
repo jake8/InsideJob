@@ -7,6 +7,7 @@
 //
 
 #import "IJWorldCollectionItem.h"
+#import "IJCollectionView.h"
 
 
 @implementation IJWorldCollectionItem
@@ -54,11 +55,9 @@
 -(void)setSelected:(BOOL)flag
 {
 	[super setSelected:flag];
-	if (flag == YES) {
-		[selectionBox setTransparent:NO];
-	} else {
-		[selectionBox setTransparent:YES];
-	}
+	[(IJCollectionView *)self.view setSelected:flag];
+	// Force displaying of the view 
+	[(IJCollectionView *)self.view display];
 }
 
 -(void)doubleClick:(id)sender

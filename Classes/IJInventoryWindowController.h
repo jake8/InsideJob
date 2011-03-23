@@ -76,6 +76,7 @@
 - (void)saveWorld;
 - (BOOL)loadWorldAtPath:(NSString *)path;
 - (BOOL)isDocumentEdited;
+- (BOOL)worldFolderContainsPath:(NSString *)path;
 
 - (void)clearInventory;
 - (void)setInventory:(NSArray *)newInventory;

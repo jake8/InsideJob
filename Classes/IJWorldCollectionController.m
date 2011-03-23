@@ -79,18 +79,7 @@
 	
 	for (index = 0; index < [recentWorlds count]; index++) {
 		NSString *filePath = [[recentWorlds objectAtIndex:index] path];	
-		
-		// Check if the file is in the '/application support/minecraft/saves' folder -- should done differently
-		BOOL exists = NO;
-		for (int i = 0; i < [worldArray count]; i++) {
-			if ([[[worldArray objectAtIndex:i] objectForKey:@"Path"] isEqualToString:filePath]) {
-				// Don't add, since its already displayed
-				exists = YES;
-			}
-		}
-		if (!exists) {
-			[self addPathToCollection:filePath withImage:[NSImage imageNamed:@"World_Recent"]];		
-		}
+		[self addPathToCollection:filePath withImage:[NSImage imageNamed:@"World_Recent"]];		
 	}
 		
 	[worldCollectionView setContent:worldArray];

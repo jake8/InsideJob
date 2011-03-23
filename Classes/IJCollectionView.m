@@ -10,6 +10,18 @@
 
 
 @implementation IJCollectionView
+@synthesize selected;
+
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		selected = NO;
+	}
+	return self;
+}
+
 
 - (NSView *)hitTest:(NSPoint)aPoint
 {
@@ -31,5 +43,32 @@
 		}
 	}
 }
+
+- (void)drawRect:(NSRect)dirtyRect
+{	
+	NSGraphicsContext *ctx = [NSGraphicsContext currentContext];
+	[ctx saveGraphicsState];
+	
+	
+	if (selected) {
+		NSRect selectionRect = NSInsetRect([self bounds], 5, 5);
+		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:3 yRadius:3];
+		[path setLineWidth:2];
+		[[NSColor grayColor] set];
+		[path stroke];
+		
+		NSGradient *innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+																 [NSColor colorWithDeviceWhite:0.95f alpha:1.0f], 0.0f, 
+																 [NSColor colorWithDeviceWhite:1.00f alpha:1.0f], 1.0f, 
+																 nil];
+		
+		[innerGradient drawInBezierPath:path angle:90.0f];
+		[innerGradient release];
+	}	
+	
+	[ctx restoreGraphicsState];
+	
+}
+
 
 @end

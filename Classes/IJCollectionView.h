@@ -12,7 +12,10 @@
 @interface IJCollectionView : NSView {
 	
 	IBOutlet id delegate;
+	BOOL selected;
 	
 }
+
+@property BOOL selected;
 
 @end

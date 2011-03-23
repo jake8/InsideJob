@@ -97,8 +97,10 @@
 		return NO;
 	}
 	
-	// Add to recent files
-	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:levelPath]];
+	// Add to recent files, if the world isn't in the 'minecraft/saves' folder
+	if ([self worldFolderContainsPath:levelPath]) {
+		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:levelPath]];
+	}
 	
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
@@ -180,12 +182,6 @@
 	[statusTextField setStringValue:statusMessage];
 	[contentView selectTabViewItemAtIndex:1];
 	return YES;
-}
-
-- (IBAction)reloadWorldInformation:(id)sender
-{	
-	if (loadedWorldPath != nil && ![loadedWorldPath isEqualToString:@""])
-		[self loadWorldAtPath:loadedWorldPath];
 }
 
 - (void)saveWorld
@@ -328,6 +324,12 @@
 	 }];
 }
 
+- (IBAction)reloadWorldInformation:(id)sender
+{	
+	if (loadedWorldPath != nil && ![loadedWorldPath isEqualToString:@""])
+		[self loadWorldAtPath:loadedWorldPath];
+}
+
 - (IBAction)showWorldSelector:(id)sender
 {
 	if ([self isDocumentEdited])
@@ -378,6 +380,17 @@
 //	item.damage = 0;
 //	[self setDocumentEdited:YES];
 //	[outlineView reloadItem:item];
+}
+
+- (BOOL)worldFolderContainsPath:(NSString *)path
+{
+	NSString *filePath = [path stringByStandardizingPath];
+	NSString *worldFolder = [[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath] stringByStandardizingPath];
+		
+	if (![[filePath stringByDeletingLastPathComponent] isEqualToString:worldFolder]) {
+		return YES;
+	}
+	return NO;
 }
 
 - (IBAction)makeSearchFieldFirstResponder:(id)sender
