@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSString *worldName;
 @property (nonatomic, retain) NSString *worldMeta;
 @property (nonatomic, retain) NSImage *worldIcon;
+@property (nonatomic, retain) NSString *worldPath;
 
 
 - (id)copyWithZone:(NSZone *)zone;

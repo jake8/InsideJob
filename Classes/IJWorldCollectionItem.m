@@ -13,11 +13,15 @@
 @synthesize worldName;
 @synthesize worldMeta;
 @synthesize worldIcon;
+@synthesize worldPath;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
+		worldName = [[NSString alloc] init];
+		worldMeta = [[NSString alloc] init];
+		worldIcon = [[NSImage alloc] init];
 		worldPath = [[NSString alloc] init];
 	}
 	return self;
@@ -39,10 +43,10 @@
 	
 	NSDictionary* data	= (NSDictionary*) [self representedObject];	
 	
-	self.worldName	= (NSString*)[data valueForKey:@"Name"];	
-	self.worldMeta	= (NSString*)[data valueForKey:@"Meta"];
-	self.worldIcon	= (NSImage*)[data valueForKey:@"Icon"];
-	worldPath = (NSString*)[data valueForKey:@"Path"];
+	[self setWorldName:(NSString*)[data valueForKey:@"Name"]];	
+	[self setWorldMeta:(NSString*)[data valueForKey:@"Meta"]];
+	[self setWorldIcon:(NSImage*)[data valueForKey:@"Icon"]];
+	[self setWorldPath:(NSString*)[data valueForKey:@"Path"]];
 	delegate = [data valueForKey:@"Delegate"];
 	
 }
@@ -51,11 +55,9 @@
 {
 	[super setSelected:flag];
 	if (flag == YES) {
-		[selectionBox setBorderColor:[NSColor grayColor]];
-		[selectionBox setFillColor:[NSColor whiteColor]];
+		[selectionBox setTransparent:NO];
 	} else {
-		[selectionBox setBorderColor:[NSColor clearColor]];
-		[selectionBox setFillColor:[NSColor clearColor]];
+		[selectionBox setTransparent:YES];
 	}
 }
 
@@ -69,6 +71,9 @@
 
 - (void) dealloc
 {
+	[worldName release];
+	[worldMeta release];
+	[worldIcon release];
 	[worldPath release];
 	[super dealloc];
 }

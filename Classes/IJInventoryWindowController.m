@@ -11,6 +11,7 @@
 #import "IJInventoryItem.h"
 #import "IJInventoryView.h"
 #import "IJItemPropertiesViewController.h"
+#import "IJWorldCollectionController.h"
 #import "MAAttachedWindow.h"
 #import "BWSheetController.h"
 
@@ -27,6 +28,7 @@
 
 - (void)awakeFromNib
 {
+	
 	loadedWorldPath = [[NSString alloc] init];
 	attemptedLoadWorldPath = [[NSString alloc] init];
 	
@@ -51,7 +53,6 @@
 	[itemTableView setTarget:self];
 	[itemTableView setDoubleAction:@selector(itemTableViewDoubleClicked:)];
 	[contentView selectTabViewItemAtIndex:0];
-	
 }
 
 
@@ -96,6 +97,8 @@
 		return NO;
 	}
 	
+	// Add to recent files
+	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:levelPath]];
 	
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
@@ -334,6 +337,7 @@
 																	 @"Your changes will be lost if you do not save them.");
 		return;
 	}
+	[worldCollectionController reloadWorldData];
 	[contentView selectTabViewItemAtIndex:0];
 }
 

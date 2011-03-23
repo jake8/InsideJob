@@ -11,17 +11,18 @@
 
 
 @implementation IJWorldCollectionController
+@synthesize worldArray;
+
 
 -(void)awakeFromNib
 {
 	worldArray = [[NSMutableArray alloc] init];
 	//Add a new observer to the array controller of the collection view
-	[worldArrayController addObserver:self forKeyPath:@"selectionIndexes" options:NSKeyValueObservingOptionNew context:nil];
-	[worldArrayController setContent:worldArray];
+	[worldCollectionView addObserver:self forKeyPath:@"selectionIndexes" options:NSKeyValueObservingOptionNew context:nil];
 	
 	[self loadWorldData];
 	
-	if ([[worldArrayController arrangedObjects] count] == 0) {
+	if ([worldArray count] == 0) {
 		[InventoryWindowController.contentView selectTabViewItemAtIndex:2];
 		[chooseButton setEnabled:NO];
 	}
@@ -31,7 +32,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if ([keyPath isEqualTo:@"selectionIndexes"]) {
-		if ([[worldArrayController selectedObjects] count] > 0) {
+		if ([[worldCollectionView selectionIndexes] count] > 0) {
 			[chooseButton setEnabled:YES];
 		}
 		else {
@@ -47,7 +48,7 @@
 
 - (IBAction)openSelectedWorld:(id)sender
 {
-	int index = [worldArrayController selectionIndex];
+	int index = [[worldCollectionView selectionIndexes] firstIndex];
 	NSString *path = [[worldArray objectAtIndex:index] valueForKey:@"Path"];
 	[InventoryWindowController loadWorldAtPath:path];
 }
@@ -55,35 +56,53 @@
 
 - (void)reloadWorldData
 {
-	//[worldArray removeAllObjects];
-	//[worldArrayController setContent:worldArray];
-	//[self loadWorldData];
+	[worldArray removeAllObjects];
+	[self loadWorldData];
 }
 
 - (void)loadWorldData
 {
 	NSString *path = [@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath];
-	NSArray *folderArray = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL] retain];
-	
+	NSArray *folderArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL];
+	int index;
 	
 	// Worlds in 'application support/minecraft/saves/'
-	int index;
 	for (index = 0; index < [folderArray count]; index++) {
 		NSString *fileName = [folderArray objectAtIndex:index];
 		NSString *filePath = [path stringByAppendingPathComponent:fileName];
 		
 		[self addPathToCollection:filePath withImage:[NSImage imageNamed:@"World"]];		
 	}
+	
+	// Recently opened worlds
+	NSArray *recentWorlds = [[NSDocumentController sharedDocumentController] recentDocumentURLs];
+	
+	for (index = 0; index < [recentWorlds count]; index++) {
+		NSString *filePath = [[recentWorlds objectAtIndex:index] path];	
 		
-	[worldArrayController	setSelectionIndex:0];
-	[folderArray release];
+		// Check if the file is in the '/application support/minecraft/saves' folder -- should done differently
+		BOOL exists = NO;
+		for (int i = 0; i < [worldArray count]; i++) {
+			if ([[[worldArray objectAtIndex:i] objectForKey:@"Path"] isEqualToString:filePath]) {
+				// Don't add, since its already displayed
+				exists = YES;
+			}
+		}
+		if (!exists) {
+			[self addPathToCollection:filePath withImage:[NSImage imageNamed:@"World_Recent"]];		
+		}
+	}
+		
+	[worldCollectionView setContent:worldArray];
+	[worldCollectionView setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
 }
 
 - (void)addPathToCollection:(NSString *)path withImage:(NSImage *)icon
-{
+{	
+	NSError *error = nil;
 	NSString *fileName = [path lastPathComponent];
-	NSDictionary *fileAttr = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
-		
+	NSDictionary *fileAttr = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+	
 	if ([fileName hasPrefix:@"."]) {
 		return;
 	}
@@ -94,26 +113,25 @@
 		return;
 	}
 	
-	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"'Created:' MMM d yyyy 'at' h:m:s a"];
 	NSString *fileMeta = [formatter stringFromDate:[fileAttr valueForKey:NSFileCreationDate]];
+	[formatter release];
 	
+	[worldArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+												 fileName, @"Name",
+												 fileMeta, @"Meta",
+												 icon, @"Icon",
+												 self, @"Delegate",
+												 path, @"Path",
+												 nil]];
 	
-	int arrayIndex = [[worldArrayController arrangedObjects] count];
-	[worldArrayController insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-																			fileName, @"Name",
-																			fileMeta, @"Meta",
-																			icon, @"Icon",
-																			self, @"Delegate",
-																			path, @"Path",
-																			nil] 
-							 atArrangedObjectIndex:arrayIndex];
 }
 
 - (void)dealloc
 {
 	//Remove the collection view array controller selectionIndexes observer
-	[worldArrayController removeObserver:self forKeyPath:@"selectionIndexes"];
+	[worldCollectionView removeObserver:self forKeyPath:@"selectionIndexes"];
 	[worldArray release];
 	[super dealloc];
 }

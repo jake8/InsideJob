@@ -13,6 +13,7 @@
 @class IJMinecraftLevel;
 @class MAAttachedWindow;
 @class IJItemPropertiesViewController;
+@class IJWorldCollectionController;
 @class BWSheetController;
 
 @interface IJInventoryWindowController : NSWindowController <NSWindowDelegate, IJInventoryViewDelegate> {
@@ -42,6 +43,7 @@
 	
 	// 
 	IJItemPropertiesViewController *propertiesViewController;
+	IBOutlet IJWorldCollectionController *worldCollectionController;
 	MAAttachedWindow *propertiesWindow;
 	id observerObject;
 	

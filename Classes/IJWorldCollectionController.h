@@ -11,12 +11,14 @@
 @class IJInventoryWindowController;
 
 @interface IJWorldCollectionController : NSObject {
-	IBOutlet NSArrayController *worldArrayController;
+	IBOutlet NSCollectionView *worldCollectionView;
 	IBOutlet NSButton *chooseButton;
 	IBOutlet IJInventoryWindowController *InventoryWindowController;
 	
 	NSMutableArray *worldArray;
 }
+
+@property (nonatomic, retain) NSMutableArray *worldArray;
 
 - (void)openWorldAtPath:(NSString *)path;
 - (IBAction)openSelectedWorld:(id)sender;

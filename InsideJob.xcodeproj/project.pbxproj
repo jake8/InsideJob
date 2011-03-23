@@ -31,13 +31,13 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AE22BBD113305197007E4D62 /* BWSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE22BBD013305197007E4D62 /* BWSheetController.m */; };
+		AE671ED51339645A00A7CF50 /* World_Recent.png in Resources */ = {isa = PBXBuildFile; fileRef = AE671ED41339645A00A7CF50 /* World_Recent.png */; };
 		AE7C5D66132ECB8D0068F958 /* WorldCollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE7C5D64132ECB8D0068F958 /* WorldCollectionItem.xib */; };
 		AE7C5D71132ECC2A0068F958 /* IJWorldCollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7C5D70132ECC2A0068F958 /* IJWorldCollectionItem.m */; };
 		AE7C5D8D132ECEC90068F958 /* World.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7C5D8C132ECEC90068F958 /* World.png */; };
 		AE7C605F132EEC6E0068F958 /* IJCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7C605E132EEC6E0068F958 /* IJCollectionView.m */; };
 		AE7C674513303B050068F958 /* IJInventoryPresetController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7C674413303B050068F958 /* IJInventoryPresetController.m */; };
 		AE7F2BD7132EA78700E62D3E /* IJWorldCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7F2BD6132EA78700E62D3E /* IJWorldCollectionController.m */; };
-		AEC11E4D1337FC4B00DA166C /* World_Recent.png in Resources */ = {isa = PBXBuildFile; fileRef = AEC11E4C1337FC4B00DA166C /* World_Recent.png */; };
 		AEE84E74132DD3710022DD50 /* KBLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6B132DD3710022DD50 /* KBLabel.m */; };
 		AEE84E75132DD3710022DD50 /* KBScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6D132DD3710022DD50 /* KBScroller.m */; };
 		AEE84E76132DD3710022DD50 /* KBScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE84E6F132DD3710022DD50 /* KBScrollView.m */; };
@@ -92,6 +92,7 @@
 		8D1107320486CEB800E47090 /* Inside Job.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Inside Job.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE22BBCF13305197007E4D62 /* BWSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWSheetController.h; sourceTree = "<group>"; };
 		AE22BBD013305197007E4D62 /* BWSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWSheetController.m; sourceTree = "<group>"; };
+		AE671ED41339645A00A7CF50 /* World_Recent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = World_Recent.png; sourceTree = "<group>"; };
 		AE7C5D65132ECB8D0068F958 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/WorldCollectionItem.xib; sourceTree = "<group>"; };
 		AE7C5D6F132ECC2A0068F958 /* IJWorldCollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJWorldCollectionItem.h; sourceTree = "<group>"; };
 		AE7C5D70132ECC2A0068F958 /* IJWorldCollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJWorldCollectionItem.m; sourceTree = "<group>"; };
@@ -102,7 +103,6 @@
 		AE7C674413303B050068F958 /* IJInventoryPresetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJInventoryPresetController.m; sourceTree = "<group>"; };
 		AE7F2BD5132EA78700E62D3E /* IJWorldCollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJWorldCollectionController.h; sourceTree = "<group>"; };
 		AE7F2BD6132EA78700E62D3E /* IJWorldCollectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJWorldCollectionController.m; sourceTree = "<group>"; };
-		AEC11E4C1337FC4B00DA166C /* World_Recent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = World_Recent.png; sourceTree = "<group>"; };
 		AEE84E6A132DD3710022DD50 /* KBLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBLabel.h; sourceTree = "<group>"; };
 		AEE84E6B132DD3710022DD50 /* KBLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBLabel.m; sourceTree = "<group>"; };
 		AEE84E6C132DD3710022DD50 /* KBScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBScroller.h; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 		66BC07711262823E005A23F4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				AEC11E4C1337FC4B00DA166C /* World_Recent.png */,
+				AE671ED41339645A00A7CF50 /* World_Recent.png */,
 				AE7C5D8C132ECEC90068F958 /* World.png */,
 				AEE84E7C132DD38F0022DD50 /* Safari TextField */,
 				663803B1131769E90015CFAD /* blockNotFound.png */,
@@ -391,7 +391,7 @@
 				AEE84E87132DD38F0022DD50 /* KBSTextFieldRC.png in Resources */,
 				AE7C5D66132ECB8D0068F958 /* WorldCollectionItem.xib in Resources */,
 				AE7C5D8D132ECEC90068F958 /* World.png in Resources */,
-				AEC11E4D1337FC4B00DA166C /* World_Recent.png in Resources */,
+				AE671ED51339645A00A7CF50 /* World_Recent.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
