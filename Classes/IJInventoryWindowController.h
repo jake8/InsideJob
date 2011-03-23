@@ -79,6 +79,8 @@
 - (BOOL)worldFolderContainsPath:(NSString *)path;
 
 - (void)clearInventory;
+- (void)unloadWorld;
+
 - (void)setInventory:(NSArray *)newInventory;
 - (NSArray *)currentInventory;
 - (void)addInventoryItem:(short)item selectItem:(BOOL)flag;

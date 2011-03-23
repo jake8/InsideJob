@@ -102,37 +102,13 @@
 		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:levelPath]];
 	}
 	
-	[armorInventory removeAllObjects];
-	[quickInventory removeAllObjects];
-	[normalInventory removeAllObjects];
-	
-	[inventoryView setItems:normalInventory];
-	[quickView setItems:quickInventory];
-	[armorView setItems:armorInventory];
-	
-	[self willChangeValueForKey:@"worldTime"];
-
-	[level release];
-	level = nil;
-	
-	
-	for (IJInventoryItem *item in inventory) {
-		[item removeObserver:self forKeyPath:@"count"];
-		[item removeObserver:self forKeyPath:@"damage"];
-	}	
-	
-	[inventory release];
-	inventory = nil;
-	[self didChangeValueForKey:@"worldTime"];
-	
-	statusTextField.stringValue = @"No world loaded.";
-	
+	[self unloadWorld];
 	
 	[self willChangeValueForKey:@"worldTime"];
 	
 	level = [[IJMinecraftLevel nbtContainerWithData:fileData] retain];
 	inventory = [[level inventory] retain];
-		
+	
 	[self didChangeValueForKey:@"worldTime"];
 	
 	
@@ -267,6 +243,7 @@
 		}
 		else {
 			[self saveWorld];
+			[self unloadWorld];
 			[contentView selectTabViewItemAtIndex:0];
 		}		
 	}
@@ -277,6 +254,7 @@
 			[self loadWorldAtPath:attemptedLoadWorldPath];
 		}
 		else {
+			[self unloadWorld];
 			[contentView selectTabViewItemAtIndex:0];
 		}
 	}
@@ -339,6 +317,11 @@
 																	 @"Your changes will be lost if you do not save them.");
 		return;
 	}
+	
+	// Clear inventory and unload world -- We need to unload it to disable the 'World > Save', 'Tools > Add Item by ID', etc Menu Items
+	[self unloadWorld];
+	
+	// Show world selector
 	[worldCollectionController reloadWorldData];
 	[contentView selectTabViewItemAtIndex:0];
 }
@@ -577,6 +560,27 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];	
+}
+
+- (void)unloadWorld
+{
+	[self clearInventory];
+	
+	[self willChangeValueForKey:@"worldTime"];
+	
+	[level release];
+	level = nil;
+	
+	for (IJInventoryItem *item in inventory) {
+		[item removeObserver:self forKeyPath:@"count"];
+		[item removeObserver:self forKeyPath:@"damage"];
+	}	
+	
+	[inventory release];
+	inventory = nil;
+	[self didChangeValueForKey:@"worldTime"];
+	
+	statusTextField.stringValue = @"No world loaded.";
 }
 
 - (void)setInventory:(NSArray *)newInventory
