@@ -15,6 +15,7 @@
 - (id)initWithCoder:(NSCoder *)decoder
 {
 	if ((self = [super initWithCoder:decoder])) {
+		usesAlternateStyle = NO;
 		[self setArrowsPosition:NSScrollerArrowsNone];	
 		if ([self bounds].size.width / [self bounds].size.height < 1) {
 			isVertical = YES;
@@ -29,7 +30,6 @@
 {		
 	NSGraphicsContext *ctx = [NSGraphicsContext currentContext];
 
-	
 	// Background
 	if (usesAlternateStyle) {
 		[ctx saveGraphicsState];
@@ -62,7 +62,8 @@
 	
 	NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect([self bounds], 4, 4) xRadius:4 yRadius:4];
 	[path addClip];
-	[[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] set];
+	
+	[[NSColor colorWithCalibratedWhite:0.75 alpha:1.0] set];
 	NSRectFill([self bounds]);
 	
 	[ctx restoreGraphicsState];
@@ -87,7 +88,6 @@
 		[path addClip];
 		
 		[[NSColor colorWithCalibratedWhite:0.5 alpha:1.0] set];
-		
 		NSRectFill(knobRect);
 	}
 	else {
@@ -99,7 +99,6 @@
 		[path addClip];
 		
 		[[NSColor colorWithCalibratedWhite:0.5 alpha:1.0] set];
-		
 		NSRectFill(knobRect);
 	}
 }

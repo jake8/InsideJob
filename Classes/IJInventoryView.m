@@ -255,10 +255,7 @@ const static CGFloat cellOffset = 40;
 	else
 		return NSDragOperationDelete;
 }
-//- (void)draggedImage:(NSImage *)image beganAt:(NSPoint)screenPoint
-//{
-//	NSLog(@"%s", __PRETTY_FUNCTION__);
-//}
+
 - (void)draggedImage:(NSImage *)image endedAt:(NSPoint)screenPoint operation:(NSDragOperation)operation
 {
 	NSLog(@"%s operation=%d", __PRETTY_FUNCTION__, operation);
@@ -272,10 +269,7 @@ const static CGFloat cellOffset = 40;
 		}
 	}
 }
-//- (void)draggedImage:(NSImage *)image movedTo:(NSPoint)screenPoint
-//{
-//	NSLog(@"%s", __PRETTY_FUNCTION__);
-//}
+
 
 
 #pragma mark -

@@ -49,9 +49,9 @@
 	NSGraphicsContext *ctx = [NSGraphicsContext currentContext];
 	[ctx saveGraphicsState];
 	
-	
 	if (selected) {
 		NSRect selectionRect = NSInsetRect([self bounds], 5, 5);
+		
 		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:3 yRadius:3];
 		[path setLineWidth:2];
 		[[NSColor grayColor] set];
@@ -67,7 +67,6 @@
 	}	
 	
 	[ctx restoreGraphicsState];
-	
 }
 
 

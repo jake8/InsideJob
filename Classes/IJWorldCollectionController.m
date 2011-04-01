@@ -103,7 +103,7 @@
 	}
 	
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"'Created:' MMM d yyyy 'at' h:m:s a"];
+	[formatter setDateFormat:@"'Created:' MMM d yyyy 'at' h a"];
 	NSString *fileMeta = [formatter stringFromDate:[fileAttr valueForKey:NSFileCreationDate]];
 	[formatter release];
 	
@@ -119,7 +119,7 @@
 
 - (void)dealloc
 {
-	//Remove the collection view array controller selectionIndexes observer
+	//Remove the collection view selectionIndexes observer
 	[worldCollectionView removeObserver:self forKeyPath:@"selectionIndexes"];
 	[worldArray release];
 	[super dealloc];

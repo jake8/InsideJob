@@ -67,7 +67,7 @@
 	
 	int index = 0;
 	
-	if (itemId <= 94)
+	if (itemId <= 95)
 	{
 		if (itemId <= 17)
 			index = itemId - 1; // first item is 1
@@ -82,19 +82,14 @@
 		index = itemId - 256;
 		atlasOffset = NSMakePoint(445, 75);
 	}
-	else if (itemId >= 352 && itemId <= 356)
+	else if (itemId >= 352 && itemId <= 357)
 	{
 		index = itemId - 241;
 		atlasOffset = NSMakePoint(445, 75);
 	}
-	else if (itemId == 2256)
+	else if (itemId >= 2256 && itemId <= 2257 )
 	{
-		index = 0;
-		atlasOffset = NSMakePoint(445+pixelsPerColumn*8, pixelsPerRow*13 + 18);
-	}
-	else if (itemId == 2257)
-	{
-		index = 0;
+		index = itemId - 2256;
 		atlasOffset = NSMakePoint(445, pixelsPerRow*14+18);
 	}
 	else
