@@ -48,14 +48,15 @@
 
 - (NSString *)itemName
 {
-	NSString *name = [[IJInventoryItem itemIdLookup] objectForKey:[NSNumber numberWithShort:self.itemId]];
+	NSDictionary *itemData = [[IJInventoryItem itemIdLookup] objectForKey:[NSNumber numberWithShort:self.itemId]];
+	NSString *name = [itemData objectForKey:@"Name"];
 	if (name)
 		return name;
 	else
 		return [NSString stringWithFormat:@"%d", self.itemId];
 }
 
-+ (NSImage *)imageForItemId:(uint16_t)itemId
++ (NSImage *)imageForItemId:(uint16_t)itemId withDamage:(uint16_t)damage
 {
 	NSSize itemImageSize = NSMakeSize(32, 32);
 	NSPoint atlasOffset;
@@ -67,24 +68,51 @@
 	
 	int index = 0;
 	
+	// Blocks
 	if (itemId <= 95)
 	{
-		if (itemId <= 17)
+		if (itemId <= 16) {
 			index = itemId - 1; // first item is 1
-		else if (itemId <= 35 )
-			index = itemId + 1;
-		else if (itemId >= 37)
-			index = itemId + 6;
+		}
+		else if (itemId == 17) {
+			if (damage > 2)
+				damage = 0;
+			index = itemId - 1 + damage;
+		}
+		else if (itemId <= 34) {
+			index = itemId + 1;		
+		}
+		else if (itemId == 35) {
+			if (damage > 15)
+				damage = 0;
+			index = itemId + 1 + damage;
+		}
+		else if (itemId <= 43) {
+			index = itemId + 15;
+		}
+		else if (itemId == 44) {
+			if (damage > 3)
+				damage = 0;
+			index = itemId + 15 + damage;
+		}
+		else if (itemId <= 95) {
+			index = itemId + 18;
+		}
+
 		atlasOffset = NSMakePoint(36, 75);
 	}
-	else if (itemId >= 256 && itemId <= 351)
+	// Items
+	else if (itemId >= 256 && itemId <= 357)
 	{
 		index = itemId - 256;
-		atlasOffset = NSMakePoint(445, 75);
-	}
-	else if (itemId >= 352 && itemId <= 357)
-	{
-		index = itemId - 241;
+		if (itemId >= 352 && itemId <= 357)
+			index = itemId - 241;
+		if (itemId == 351) {
+			if (damage > 15)
+				damage = 0;
+			index = itemId - 256 + damage;
+		}
+
 		atlasOffset = NSMakePoint(445, 75);
 	}
 	else if (itemId >= 2256 && itemId <= 2257 )
@@ -133,7 +161,7 @@
 
 - (NSImage *)image
 {
-	return [IJInventoryItem imageForItemId:itemId];
+	return [IJInventoryItem imageForItemId:itemId withDamage:damage];
 }
 
 + (NSDictionary *)itemIdLookup
@@ -151,8 +179,17 @@
 				return;
 			NSArray *components = [line componentsSeparatedByString:@","];
 			NSNumber *itemId = [NSNumber numberWithShort:[[components objectAtIndex:0] intValue]];
+			
+			NSNumber *damage = [NSNumber numberWithShort:0];
+			if ([components count] > 2) {
+				damage = [NSNumber numberWithShort:[[components objectAtIndex:2] intValue]];
+			}
 			NSString *name = [components objectAtIndex:1];
-			[building setObject:name forKey:itemId];
+
+			NSArray *objects = [NSArray arrayWithObjects:name, damage, nil];
+			NSArray *keys = [NSArray arrayWithObjects:@"Name", @"Damage",nil];
+			NSDictionary *itemData = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+			[building setObject:itemData forKey:itemId];
 		}];
 		lookup = [[NSDictionary alloc] initWithDictionary:building];
 	}

@@ -35,6 +35,6 @@
 
 + (NSDictionary *)itemIdLookup;
 
-+ (NSImage *)imageForItemId:(uint16_t)itemId;
++ (NSImage *)imageForItemId:(uint16_t)itemId withDamage:(uint16_t)damage;
 
 @end

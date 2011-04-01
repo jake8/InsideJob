@@ -522,6 +522,10 @@
 																		 if (item.count > 64 || item.count < -1) {
 																			 item.count = -1;
 																		 }
+																		 if (item.damage < 0) {
+																			 item.damage = 0;
+																		 }
+																		 
 																	   [theInventoryView reloadItemAtIndex:itemIndex];
 																	   [propertiesWindow setAlphaValue:0.0];
 																   }];
@@ -707,7 +711,8 @@
 	NSMutableArray *results = [NSMutableArray array];
 	
 	for (NSNumber *itemId in allItemIds) {
-		NSString *name = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
+		NSDictionary *itemData = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
+		NSString *name = [itemData objectForKey:@"Name"];
 		NSRange range = [name rangeOfString:filterString options:NSCaseInsensitiveSearch];
 		
 		if (range.location != NSNotFound) {
@@ -736,15 +741,17 @@
 - (id)tableView:(NSTableView *)theTableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
 	NSNumber *itemId = [filteredItemIds objectAtIndex:row];
+	NSDictionary *itemData = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
+	NSNumber *itemDamage = [itemData objectForKey:@"Damage"];
 	
 	if ([tableColumn.identifier isEqual:@"itemId"]) {
 		return itemId;
 	}
 	else if ([tableColumn.identifier isEqual:@"image"]) {
-		return [IJInventoryItem imageForItemId:[itemId shortValue]];
+		return [IJInventoryItem imageForItemId:[itemId shortValue] withDamage:[itemDamage shortValue]];
 	}
 	else {
-		NSString *name = [[IJInventoryItem itemIdLookup] objectForKey:itemId];
+		NSString *name = [itemData objectForKey:@"Name"];
 		return name;
 	}
 }
