@@ -340,6 +340,7 @@ const static CGFloat cellOffset = 40;
 	{
 		item.count = MIN(64, item.count + existingItem.count);
 	}
+	
 	[delegate inventoryView:self setItem:item atIndex:index];
 	return YES;
 }

@@ -255,10 +255,6 @@
 				AE7C674413303B050068F958 /* IJInventoryPresetController.m */,
 				AE7C5D6F132ECC2A0068F958 /* IJWorldCollectionItem.h */,
 				AE7C5D70132ECC2A0068F958 /* IJWorldCollectionItem.m */,
-				AE7C605D132EEC6E0068F958 /* IJCollectionView.h */,
-				AE7C605E132EEC6E0068F958 /* IJCollectionView.m */,
-				66BC00011260215C005A23F4 /* IJInventoryView.h */,
-				66BC00021260215C005A23F4 /* IJInventoryView.m */,
 				66BC03601260D095005A23F4 /* IJItemPropertiesViewController.h */,
 				66BC03611260D095005A23F4 /* IJItemPropertiesViewController.m */,
 				AE7F2B08132E8F2300E62D3E /* UI */,
@@ -273,6 +269,10 @@
 				66BC033A1260CC59005A23F4 /* MAAttachedWindow.m */,
 				6697AD7012B86762001890C6 /* IJTableView.h */,
 				6697AD7112B86762001890C6 /* IJTableView.m */,
+				AE7C605D132EEC6E0068F958 /* IJCollectionView.h */,
+				AE7C605E132EEC6E0068F958 /* IJCollectionView.m */,
+				66BC00011260215C005A23F4 /* IJInventoryView.h */,
+				66BC00021260215C005A23F4 /* IJInventoryView.m */,
 			);
 			name = "Views & Windows";
 			sourceTree = "<group>";
@@ -491,6 +491,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = InsideJob_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;

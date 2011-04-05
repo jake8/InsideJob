@@ -175,6 +175,13 @@
 	NSMutableArray *newInventory = [NSMutableArray array];
 	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil]) {
 		for (IJInventoryItem *item in items) {
+			// Validate item count
+			if (item.count < -1)
+				[item setCount:-1];
+			if (item.count > 64)
+				[item setCount:64];
+
+			// Add item if it's valid
 			if ((item.count > 0 || item.count == -1) && item.itemId > 0)
 				[newInventory addObject:item];
 		}
@@ -469,7 +476,6 @@
 		item.slot = slotOffset + itemIndex;
 		[theInventoryView setItems:itemArray];
 	}
-	NSLog(@"Edited");
 	[self setDocumentEdited:YES];
 }
 
@@ -484,11 +490,12 @@
 	point.y -= 16;
 	
 	NSArray *items = [self itemArrayForInventoryView:theInventoryView slotOffset:nil];
-	IJInventoryItem *item = [items objectAtIndex:itemIndex];
+	IJInventoryItem *selectedItem = [items objectAtIndex:itemIndex];
 
-	if (item.itemId == 0 || lastItem == item) {
-		// Perhaps caused by a bug, but it seems to be possible for the window to not be invisible at this point,
-		// so we will set the alpha value here to be sure.
+	if (selectedItem.itemId == 0 || lastItem == selectedItem) {
+		// The window may not be invisible at this point,
+		// caused by the MAAttachedWindow not calling NSWindowDidResignKey
+		// or the window not resigning key. (This bug needs to be fixed)
 		[propertiesWindow setAlphaValue:0.0];
 		propertiesViewController.item = nil;
 		return; // can't show info on nothing
@@ -504,7 +511,7 @@
 													   atDistance:0];
 		[propertiesWindow setBackgroundColor:[NSColor controlBackgroundColor]];
 		[propertiesWindow setViewMargin:4.0];
-		[propertiesWindow setAlphaValue:1.0];
+		[propertiesWindow setAlphaValue:0.9];
 		[propertiesWindow setArrowHeight:10];
 		[[self window] addChildWindow:propertiesWindow ordered:NSWindowAbove];
 	}
@@ -516,23 +523,23 @@
 																		queue:[NSOperationQueue mainQueue]
 																   usingBlock:^(NSNotification *notification) {
 																	   [propertiesViewController commitEditing];
-																	   if (item.count == 0) {
-																		   item.itemId = 0;
-																		 }
-																		 if (item.count > 64 || item.count < -1) {
-																			 item.count = -1;
-																		 }
-																		 if (item.damage < 0) {
-																			 item.damage = 0;
-																		 }
+																		 // Validate item
+																	   if (selectedItem.count == 0)
+																		   selectedItem.itemId = 0;
+																		 if (selectedItem.count < -1)
+																			 selectedItem.count = -1;
+																		 if (selectedItem.count > 64)
+																			 selectedItem.count = 64;
+																		 if (selectedItem.damage < 0)
+																			 selectedItem.damage = 0;
 																		 
 																	   [theInventoryView reloadItemAtIndex:itemIndex];
 																	   [propertiesWindow setAlphaValue:0.0];
 																   }];
-	propertiesViewController.item = item;
+	propertiesViewController.item = selectedItem;
 	[propertiesWindow setPoint:point side:MAPositionRight];
 	[propertiesWindow makeKeyAndOrderFront:nil];
-	[propertiesWindow setAlphaValue:1.0];
+	[propertiesWindow setAlphaValue:0.9];
 }
 
 #pragma mark -
