@@ -69,7 +69,7 @@
 	int index = 0;
 	
 	// Blocks
-	if (itemId <= 95)
+	if (itemId <= 25 || (itemId >= 27 && itemId <= 28) || (itemId >= 35 && itemId <= 94))
 	{
 		if (itemId <= 16) {
 			index = itemId - 1; // first item is 1

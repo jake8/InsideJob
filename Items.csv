@@ -27,6 +27,8 @@
 23,Dispenser
 24,Sandstone
 25,Note Block
+27,Powered Rail
+28,Detector Rail
 #Wool
 35,Orange Wool,1
 35,Magenta Wool,2
@@ -79,7 +81,7 @@
 63,Sign Post
 64,Wooden Door
 65,Ladder
-66,Minecart Tracks
+66,Minecart Rails
 67,Cobblestone Stairs
 68,Wall Sign
 69,Lever

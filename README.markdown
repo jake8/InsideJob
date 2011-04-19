@@ -33,6 +33,10 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
+#### 1.0.6 - April 19, 2011
+
+- Updated for Minecraft 1.5
+
 #### 1.0.5 Beta - March 23, 2011
 
 - Recently opened worlds now display in the world selector.
