@@ -325,7 +325,7 @@
 		return;
 	}
 	
-	// Clear inventory and unload world -- We need to unload it to disable the 'World > Save', 'Tools > Add Item by ID', etc Menu Items
+	// Clear inventory and unload world
 	[self unloadWorld];
 	
 	// Show world selector
@@ -344,6 +344,12 @@
 	[newItemSheetController closeSheet:self];
 	[newItemSheetController setSheetErrorMessage:@""];
 	[self addInventoryItem:itemID selectItem:YES];
+}
+
+- (IBAction)clearInventoryItems:(id)sender
+{
+	[self setDocumentEdited:YES];
+	[self clearInventory];
 }
 
 - (IBAction)copyWorldSeed:(id)sender
@@ -400,6 +406,9 @@
 		return inventory != nil;
 	}
 	if (anItem.action == @selector(copyWorldSeed:)) {
+		return inventory != nil;
+	}
+	if (anItem.action == @selector(clearInventoryItems:)) {
 		return inventory != nil;
 	}
 	return YES;

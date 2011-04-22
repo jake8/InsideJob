@@ -71,6 +71,7 @@
 - (IBAction)itemTableViewDoubleClicked:(id)sender;
 
 - (IBAction)addItem:(id)sender;
+- (IBAction)clearInventoryItems:(id)sender;
 - (IBAction)copyWorldSeed:(id)sender;
 
 - (void)saveWorld;
