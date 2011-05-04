@@ -46,6 +46,7 @@
 	
 	// Item Table View setup
 	NSArray *keys = [[IJInventoryItem itemIdLookup] allKeys];
+	//NSLog(@"Item CVS Data:\n%@",[IJInventoryItem itemIdLookup]);
 	keys = [keys sortedArrayUsingSelector:@selector(compare:)];
 	allItemIds = [[NSArray alloc] initWithArray:keys];
 	filteredItemIds = [allItemIds retain];
@@ -354,13 +355,26 @@
 
 - (IBAction)copyWorldSeed:(id)sender
 {
-	
 	NSString *worldSeed = [NSString stringWithFormat:@"%@",[level worldSeedContainer].numberValue];
 	
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
 	NSArray *types = [NSArray arrayWithObjects:NSStringPboardType, nil];
 	[pb declareTypes:types owner:self];
 	[pb setString:worldSeed forType:NSStringPboardType];
+}
+
+- (IBAction)incrementTime:(id)sender
+{
+	if ([sender selectedSegment] == 0) {		
+		int wTime = [[self worldTime] intValue];
+		int result = wTime + (24000 - (wTime % 24000));
+		[self setWorldTime:[NSNumber numberWithInt:result]];
+	}
+	else if ([sender selectedSegment] == 1) {
+		int wTime = [[self worldTime] intValue];
+		int result = wTime + (12000 - (wTime % 12000));
+		[self setWorldTime:[NSNumber numberWithInt:result]];
+	}
 }
 
 - (void)saveDocument:(id)sender
@@ -572,10 +586,23 @@
 #pragma mark Inventory
 
 - (void)clearInventory
-{
+{	
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
 	[normalInventory removeAllObjects];
+	
+	// Add placeholder inventory items:
+	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++) {
+		[quickInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotQuickFirst + i]];
+	}
+	
+	for (int i = 0; i < IJInventorySlotNormalLast + 1 - IJInventorySlotNormalFirst; i++) {
+		[normalInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotNormalFirst + i]];
+	}
+	
+	for (int i = 0; i < IJInventorySlotArmorLast + 1 - IJInventorySlotArmorFirst; i++) {
+		[armorInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotArmorFirst + i]];
+	}	
 	
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];

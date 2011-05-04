@@ -73,6 +73,7 @@
 - (IBAction)addItem:(id)sender;
 - (IBAction)clearInventoryItems:(id)sender;
 - (IBAction)copyWorldSeed:(id)sender;
+- (IBAction)incrementTime:(id)sender;
 
 - (void)saveWorld;
 - (BOOL)loadWorldAtPath:(NSString *)path;

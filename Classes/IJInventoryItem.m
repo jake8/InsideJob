@@ -69,34 +69,42 @@
 	int index = 0;
 	
 	// Blocks
-	if (itemId <= 25 || (itemId >= 27 && itemId <= 28) || (itemId >= 35 && itemId <= 94))
+	if (itemId <= 25 || (itemId >= 27 && itemId <= 28) || itemId == 30 || (itemId >= 35 && itemId <= 94) && itemId != 36)
 	{
-		if (itemId <= 16) {
-			index = itemId - 1; // first item is 1
+		if (itemId <= 5) {
+			index = itemId - 1;
+		}
+		else if (itemId == 6) {
+			if (damage > 2)
+				damage = 0;
+			index = itemId - 1 + damage;			
+		}
+		else if (itemId <= 16) {
+			index = itemId + 1;
 		}
 		else if (itemId == 17) {
 			if (damage > 2)
 				damage = 0;
-			index = itemId - 1 + damage;
+			index = itemId + 1 + damage;
 		}
 		else if (itemId <= 34) {
-			index = itemId + 1;		
+			index = itemId + 3;		
 		}
 		else if (itemId == 35) {
 			if (damage > 15)
 				damage = 0;
-			index = itemId + 1 + damage;
+			index = itemId + 10 + damage;
 		}
 		else if (itemId <= 43) {
-			index = itemId + 15;
+			index = itemId + 24;
 		}
 		else if (itemId == 44) {
 			if (damage > 3)
 				damage = 0;
-			index = itemId + 15 + damage;
+			index = itemId + 24 + damage;
 		}
 		else if (itemId <= 95) {
-			index = itemId + 18;
+			index = itemId + 27;
 		}
 
 		atlasOffset = NSMakePoint(36, 75);
