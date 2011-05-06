@@ -33,6 +33,12 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
+#### 1.0.6 - May 5, 2011
+
+- Fixed a bug when adding items to the inventory with Cmd N. (Add Item by ID)
+- Added graphics for the different sapling varieties.
+- Added the spiderweb (ID 30)
+
 #### 1.0.6 - April 19, 2011
 
 - Updated for Minecraft 1.5
