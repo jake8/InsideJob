@@ -112,21 +112,6 @@
 	
 	[self didChangeValueForKey:@"worldTime"];
 	
-	
-	// Add placeholder inventory items:
-	for (int i = 0; i < IJInventorySlotQuickLast + 1 - IJInventorySlotQuickFirst; i++) {
-		[quickInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotQuickFirst + i]];
-	}
-	
-	for (int i = 0; i < IJInventorySlotNormalLast + 1 - IJInventorySlotNormalFirst; i++) {
-		[normalInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotNormalFirst + i]];
-	}
-	
-	for (int i = 0; i < IJInventorySlotArmorLast + 1 - IJInventorySlotArmorFirst; i++) {
-		[armorInventory addObject:[IJInventoryItem emptyItemWithSlot:IJInventorySlotArmorFirst + i]];
-	}
-	
-	
 	// Overwrite the placeholders with actual inventory:
 	for (IJInventoryItem *item in inventory) {
 		// Add a KVO so that we can set the document as edited when the count or damage values are changed.
@@ -148,7 +133,7 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-	
+		
 	[self setDocumentEdited:NO];
 	statusTextField.stringValue = @"";
 
@@ -187,7 +172,7 @@
 				[newInventory addObject:item];
 		}
 	}
-	
+		
 	[level setInventory:newInventory];
 	
 	NSString *dataPath = [IJMinecraftLevel levelDataPathForWorld:levelPath];
@@ -367,12 +352,12 @@
 {
 	if ([sender selectedSegment] == 0) {		
 		int wTime = [[self worldTime] intValue];
-		int result = wTime + (24000 - (wTime % 24000));
+		int result = wTime - (24000 - (wTime % 24000));
 		[self setWorldTime:[NSNumber numberWithInt:result]];
 	}
 	else if ([sender selectedSegment] == 1) {
 		int wTime = [[self worldTime] intValue];
-		int result = wTime + (12000 - (wTime % 12000));
+		int result = wTime + (24000 - (wTime % 24000));
 		[self setWorldTime:[NSNumber numberWithInt:result]];
 	}
 }
@@ -639,7 +624,7 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-	
+
 	for (IJInventoryItem *item in inventory) {
 		[item removeObserver:self forKeyPath:@"count"];
 		[item removeObserver:self forKeyPath:@"damage"];
@@ -681,7 +666,7 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-	
+		
 	[self setDocumentEdited:YES];	
 }
 
