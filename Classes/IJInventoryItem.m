@@ -69,7 +69,7 @@
 	int index = 0;
 	
 	// Blocks
-	if (itemId <= 25 || (itemId >= 27 && itemId <= 28) || itemId == 30 || (itemId >= 35 && itemId <= 94) && itemId != 36)
+	if (itemId <= 25 || (itemId >= 27 && itemId <= 28) || (itemId >= 30 && itemId <= 32) || (itemId >= 35 && itemId <= 94) || itemId == 96 && itemId != 36)
 	{
 		if (itemId <= 5) {
 			index = itemId - 1;
@@ -103,17 +103,17 @@
 				damage = 0;
 			index = itemId + 24 + damage;
 		}
-		else if (itemId <= 95) {
+		else if (itemId <= 96) {
 			index = itemId + 27;
 		}
 
 		atlasOffset = NSMakePoint(36, 75);
 	}
 	// Items
-	else if (itemId >= 256 && itemId <= 357)
+	else if (itemId >= 256 && itemId <= 358)
 	{
 		index = itemId - 256;
-		if (itemId >= 352 && itemId <= 357)
+		if (itemId >= 352 && itemId <= 358)
 			index = itemId - 241;
 		if (itemId == 351) {
 			if (damage > 15)
@@ -125,7 +125,7 @@
 	}
 	else if (itemId >= 2256 && itemId <= 2257 )
 	{
-		index = itemId - 2256;
+		index = itemId - 2249;
 		atlasOffset = NSMakePoint(445, pixelsPerRow*14+18);
 	}
 	else
@@ -178,9 +178,9 @@
 	if (!lookup)
 	{
 		NSError *error = nil;
-		NSString *lines = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"Items" withExtension:@"csv"]
-												   encoding:NSUTF8StringEncoding
-													  error:&error];
+    NSString *lines = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"Items" withExtension:@"csv"]
+                                               encoding:NSUTF8StringEncoding
+                                                  error:&error];
 		NSMutableDictionary *building = [NSMutableDictionary dictionary];
 		[lines enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
 			if ([line hasPrefix:@"#"]) // ignore lines with a # prefix

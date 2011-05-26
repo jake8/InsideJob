@@ -57,7 +57,7 @@
 43,Double Step
 #Step
 44,Sandstone Step, 1
-44,Wodden Step, 2
+44,Wooden Step, 2
 44,Cobblestone Step, 3
 44,Step
 #Step End
@@ -71,7 +71,6 @@
 52,Mob Spawner
 53,Wooden Stairs
 54,Chest
-55,Redstone Wire
 56,Diamond Ore
 57,Diamond Block
 58,Workbench
@@ -79,20 +78,18 @@
 60,Soil
 61,Furnace
 62,Burning Furnace
-63,Sign Post
-64,Wooden Door
+64,Wooden Door Block
 65,Ladder
 66,Minecart Rails
 67,Cobblestone Stairs
-68,Wall Sign
 69,Lever
 70,Stone Pressure Plate
-71,Iron Door
+71,Iron Door Block
 72,Wooden Pressure Plate
 73,Redstone Ore
 74,Glowing Redstone Ore
 75,Redstone Torch (Off)
-76,Redstone Torch (On)
+76,Redstone Torch
 77,Stone Button
 78,Snow
 79,Ice
@@ -109,8 +106,9 @@
 90,Portal
 91,Jack-O-Lantern
 92,Cake Block
-93,Redstone Repeater (off)
-94,Redstone Repeater (on)
+93,Redstone Repeater (Off)
+94,Redstone Repeater
+96,Trapdoor
 256,Iron Spade
 257,Iron Pickaxe
 258,Iron Axe
@@ -230,5 +228,6 @@
 355,Bed
 356,Redstone Repeater
 357,Cookie
+358,Map
 2256,Gold Record
 2257,Green Record
