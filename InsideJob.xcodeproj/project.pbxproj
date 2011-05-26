@@ -479,6 +479,7 @@
 				INFOPLIST_FILE = "InsideJob-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = "Inside Job";
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};

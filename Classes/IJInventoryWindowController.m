@@ -27,9 +27,9 @@
 #pragma mark Initialization
 
 - (void)awakeFromNib
-{
-	
+{	
 	loadedWorldPath = [[NSString alloc] init];
+	loadedPlayerName = [[NSString alloc] initWithString:@"Default_Player"];
 	attemptedLoadWorldPath = [[NSString alloc] init];
 	
 	armorInventory = [[NSMutableArray alloc] init];
@@ -106,11 +106,13 @@
 	[self unloadWorld];
 	
 	[self willChangeValueForKey:@"worldTime"];
+	[self willChangeValueForKey:@"levelName"];
 	
 	level = [[IJMinecraftLevel nbtContainerWithData:fileData] retain];
 	inventory = [[level inventory] retain];
 	
 	[self didChangeValueForKey:@"worldTime"];
+	[self didChangeValueForKey:@"levelName"];
 	
 	// Overwrite the placeholders with actual inventory:
 	for (IJInventoryItem *item in inventory) {
@@ -284,7 +286,6 @@
 	 [openPanel setCanChooseDirectories:YES];
 	 [openPanel setCanChooseFiles:NO];
 	 [openPanel setAllowsMultipleSelection:NO];
-	 [openPanel setDirectoryURL:[NSURL fileURLWithPath:[@"~/" stringByExpandingTildeInPath]]];
 	 
 	 // Display the NSOpenPanel
 	 [openPanel beginWithCompletionHandler:^(NSInteger runResult){
@@ -423,6 +424,19 @@
 	[self willChangeValueForKey:@"worldTime"];
 	[level worldTimeContainer].numberValue = number;
 	[self didChangeValueForKey:@"worldTime"];
+	[self setDocumentEdited:YES];
+}
+
+- (NSString *)levelName
+{
+	return 	[level worldNameContainer].stringValue;
+}
+
+- (void)setLevelName:(NSString *)name
+{
+	[self willChangeValueForKey:@"levelName"];
+	[level worldNameContainer].stringValue = name;
+	[self didChangeValueForKey:@"levelName"];
 	[self setDocumentEdited:YES];
 }
 
@@ -599,6 +613,7 @@
 	[self clearInventory];
 	
 	[self willChangeValueForKey:@"worldTime"];
+	[self willChangeValueForKey:@"levelName"];
 	
 	[level release];
 	level = nil;
@@ -611,11 +626,12 @@
 	[inventory release];
 	inventory = nil;
 	[self didChangeValueForKey:@"worldTime"];
+	[self didChangeValueForKey:@"levelName"];
 	
 	statusTextField.stringValue = @"No world loaded.";
 }
 
-- (void)setInventory:(NSArray *)newInventory
+- (void)loadInventory:(NSArray *)newInventory
 {
 	[armorInventory removeAllObjects];
 	[quickInventory removeAllObjects];
@@ -825,6 +841,7 @@
 	}
 	else if (returnCode == NSAlertAlternateReturn) { // Don't save
 		[self setDocumentEdited:NO]; // Slightly hacky -- prevent the alert from being put up again.
+		[self unloadWorld];
 		[self.window performClose:nil];
 	}
 }
@@ -838,6 +855,13 @@
 																	 @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
+	
+	if (level != nil && sender != nil) {
+		[self unloadWorld];
+		[contentView selectTabViewItemAtIndex:0];
+		return NO;
+	}
+	
 	return YES;
 }
 

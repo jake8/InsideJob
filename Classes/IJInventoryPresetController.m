@@ -89,7 +89,7 @@
 	NSArray *newInventory = [NSKeyedUnarchiver unarchiveObjectWithFile:presetPath];
 	
 	[inventoryController clearInventory];
-	[inventoryController setInventory:newInventory];
+	[inventoryController loadInventory:newInventory];
 }
 
 
@@ -98,7 +98,7 @@
 
 - (void)reloadPresetList
 {
-	[presetMenu removeAllItems];
+  [presetMenu removeAllItems];
 	[presetArray removeAllObjects];
 
 	NSString *folderPath = [@"~/Library/Application Support/Inside Job/" stringByExpandingTildeInPath];

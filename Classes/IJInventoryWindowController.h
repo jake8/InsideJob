@@ -51,6 +51,7 @@
 	int64_t sessionLockValue;
 	NSString *loadedWorldPath;
 	NSString *attemptedLoadWorldPath;
+	NSString *loadedPlayerName;
 }
 
 @property (nonatomic, assign) IBOutlet NSTextField *statusTextField;
@@ -60,6 +61,7 @@
 @property (nonatomic, retain) IBOutlet IJInventoryView *armorView;
 
 @property (nonatomic, retain) NSNumber *worldTime;
+@property (nonatomic, retain) NSString *levelName;
 @property (readonly) NSArray *inventory;
 
 
@@ -83,7 +85,7 @@
 - (void)clearInventory;
 - (void)unloadWorld;
 
-- (void)setInventory:(NSArray *)newInventory;
+- (void)loadInventory:(NSArray *)newInventory;
 - (NSArray *)currentInventory;
 - (void)addInventoryItem:(short)item selectItem:(BOOL)flag;
 

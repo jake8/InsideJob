@@ -88,6 +88,12 @@
 	return [[self childNamed:@"Data"] childNamed:@"RandomSeed"];
 }
 
+- (NBTContainer *)worldNameContainer
+{
+	return [[self childNamed:@"Data"] childNamed:@"LevelName"];
+}
+
+
 
 #pragma mark -
 #pragma mark Helpers

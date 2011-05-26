@@ -38,7 +38,7 @@
 	[sheet setAlphaValue:0];
 	[sheet performSelector:@selector(orderOut:) withObject:nil afterDelay:0];
 	
-	// If the sheet has a toolbar or a bottom bar, make sure those elements can't move the window (private API)
+	// If the sheet has a toolbar or a bottom bar, make sure those elements can't move the window
 	if ([sheet respondsToSelector:@selector(setMovable:)])
 		[sheet setMovable:NO];
 }

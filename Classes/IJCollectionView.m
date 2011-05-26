@@ -50,6 +50,12 @@
 	[ctx saveGraphicsState];
 	
 	if (selected) {
+		
+		NSShadow *shadow = [[NSShadow alloc] init];
+		[shadow setShadowBlurRadius:2];
+		[shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.2]];
+		[shadow set];
+		
 		NSRect selectionRect = NSInsetRect([self bounds], 5, 5);
 		
 		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:3 yRadius:3];
@@ -64,6 +70,8 @@
 		
 		[innerGradient drawInBezierPath:path angle:90.0f];
 		[innerGradient release];
+		
+		[shadow release];
 	}	
 	
 	[ctx restoreGraphicsState];

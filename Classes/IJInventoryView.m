@@ -44,7 +44,7 @@ const static CGFloat cellOffset = 40;
 
 - (BOOL)acceptsFirstResponder
 {
-	return YES;
+	return NO;
 }
 
 - (CGColorRef)borderColor
@@ -79,7 +79,6 @@ const static CGFloat cellOffset = 40;
 	
 	[self setLayer:layer];
 	[self setWantsLayer:YES];
-	
 
 	rows = numberOfRows;
 	cols = numberOfColumns;
@@ -143,8 +142,10 @@ const static CGFloat cellOffset = 40;
 	imageLayer.contents = item.image;
 	
 	CATextLayer *textLayer = [layer.sublayers objectAtIndex:1];
-	if (item.count > 1 || item.count < 0) // for 1 and 0, show no number.
+	if (item.count > 1) // for 1 and 0, show no number.
 		textLayer.string = [NSString stringWithFormat:@"%d", item.count];
+	else if(item.count <= -1)
+		textLayer.string = @"∞";
 	else
 		textLayer.string = @"";
 }
@@ -258,13 +259,10 @@ const static CGFloat cellOffset = 40;
 
 - (void)draggedImage:(NSImage *)image endedAt:(NSPoint)screenPoint operation:(NSDragOperation)operation
 {
-	NSLog(@"%s operation=%d", __PRETTY_FUNCTION__, operation);
-	
-	if (operation == NSDragOperationNone)
-	{
+	//NSLog(@"%s operation=%d", __PRETTY_FUNCTION__, operation);
+	if (operation == NSDragOperationNone) {
 		// If the mouse has stopped outside of our bounds, we consider the item to have been removed; show an animation:
-		if (!NSMouseInRect([[self window] convertScreenToBase:screenPoint], [self bounds], NO))
-		{
+		if (!NSMouseInRect([[self window] convertScreenToBase:screenPoint], [self bounds], NO)) {
 			NSShowAnimationEffect(NSAnimationEffectDisappearingItemDefault, [NSEvent mouseLocation], NSZeroSize, nil, nil, nil);
 		}
 	}
