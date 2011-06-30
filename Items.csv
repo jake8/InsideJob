@@ -29,7 +29,9 @@
 25,Note Block
 27,Powered Rail
 28,Detector Rail
+29,Sticky Piston
 30,Spiderweb
+33,Piston
 #Wool
 35,Orange Wool,1
 35,Magenta Wool,2
@@ -229,5 +231,6 @@
 356,Redstone Repeater
 357,Cookie
 358,Map
+359,Shears
 2256,Gold Record
 2257,Green Record

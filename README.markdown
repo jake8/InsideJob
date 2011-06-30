@@ -33,7 +33,11 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
-#### 1.0.6 - May 5, 2011
+#### 1.0.8 - June 30, 2011
+
+- Added Minecraft 1.7 Items
+
+#### 1.0.7 - May 5, 2011
 
 - Fixed a bug when adding items to the inventory with Cmd N. (Add Item by ID)
 - Added graphics for the different sapling varieties.
