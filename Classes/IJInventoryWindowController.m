@@ -142,7 +142,7 @@
 	[loadedWorldPath release];
 	loadedWorldPath = [levelPath copy];
 	[contentView selectTabViewItemAtIndex:1];
-	NSString *statusMessage = [NSString stringWithFormat:@"Loaded world: %@",[[loadedWorldPath lastPathComponent] stringByDeletingPathExtension]];
+	NSString *statusMessage = [NSString stringWithFormat:@"Loaded world: %@",[loadedWorldPath lastPathComponent]];
 	[statusTextField setStringValue:statusMessage];
 	[contentView selectTabViewItemAtIndex:1];
 	return YES;
@@ -323,7 +323,7 @@
 - (IBAction)addItem:(id)sender
 {
 	int16_t itemID = [newItemField intValue];
-	if (itemID <= 0 || itemID > 8000) {
+	if (itemID <= 0) {
 		[newItemSheetController setSheetErrorMessage:@"Invalid item id."];
 		return;
 	}
@@ -533,7 +533,7 @@
 													   atDistance:0];
 		[propertiesWindow setBackgroundColor:[NSColor controlBackgroundColor]];
 		[propertiesWindow setViewMargin:4.0];
-		[propertiesWindow setAlphaValue:0.9];
+		[propertiesWindow setAlphaValue:0.95];
 		[propertiesWindow setArrowHeight:10];
 		[[self window] addChildWindow:propertiesWindow ordered:NSWindowAbove];
 	}

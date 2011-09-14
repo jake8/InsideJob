@@ -43,15 +43,17 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@ %p itemId=%d name=%@ count=%d slot=%d damage=%d",
-			NSStringFromClass([self class]), self, itemId, self.itemName, count, slot, damage];
+			NSStringFromClass([self class]), self, itemId, self.humanReadableName, count, slot, damage];
 }
 
-- (NSString *)itemName
+- (NSString *)humanReadableName
 {
 	NSDictionary *itemData = [[IJInventoryItem itemIdLookup] objectForKey:[NSNumber numberWithShort:self.itemId]];
 	NSString *name = [itemData objectForKey:@"Name"];
-	if (name)
+	if (name) {
+		name = [name stringByAppendingString:[NSString stringWithFormat:@" (%d)", self.itemId]];
 		return name;
+	}
 	else
 		return [NSString stringWithFormat:@"%d", self.itemId];
 }

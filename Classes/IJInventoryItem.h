@@ -28,7 +28,7 @@
 @property (nonatomic, assign) int8_t count;
 @property (nonatomic, assign) int8_t slot;
 
-@property (nonatomic, readonly) NSString *itemName;
+@property (nonatomic, readonly) NSString *humanReadableName;
 @property (nonatomic, readonly) NSImage *image;
 
 + (id)emptyItemWithSlot:(uint8_t)slot;
