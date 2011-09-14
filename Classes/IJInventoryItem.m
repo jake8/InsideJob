@@ -184,9 +184,11 @@
                                                   error:&error];
 		NSMutableDictionary *building = [NSMutableDictionary dictionary];
 		[lines enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-			if ([line hasPrefix:@"#"]) // ignore lines with a # prefix
+			if ([line hasPrefix:@"#"] || [line length] == 0) // ignore lines with a # prefix or empty ones
 				return;
 			NSArray *components = [line componentsSeparatedByString:@","];
+			if ([components count] == 0)
+				return;
 			NSNumber *itemId = [NSNumber numberWithShort:[[components objectAtIndex:0] intValue]];
 			
 			NSNumber *damage = [NSNumber numberWithShort:0];
