@@ -193,13 +193,13 @@
 				return;
 			NSNumber *itemId = [NSNumber numberWithShort:[[components objectAtIndex:0] intValue]];
 			
-			NSNumber *damage = [NSNumber numberWithShort:0];
+			NSNumber *itemDamage = [NSNumber numberWithShort:0];
 			if ([components count] > 2) {
-				damage = [NSNumber numberWithShort:[[components objectAtIndex:2] intValue]];
+				itemDamage = [NSNumber numberWithShort:[[components objectAtIndex:2] intValue]];
 			}
-			NSString *name = [components objectAtIndex:1];
+			NSString *itemName = [components objectAtIndex:1];
 
-			NSArray *objects = [NSArray arrayWithObjects:name, damage, nil];
+			NSArray *objects = [NSArray arrayWithObjects:itemName, itemDamage, nil];
 			NSArray *keys = [NSArray arrayWithObjects:@"Name", @"Damage",nil];
 			NSDictionary *itemData = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 			[building setObject:itemData forKey:itemId];
