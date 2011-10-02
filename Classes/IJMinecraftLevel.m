@@ -93,6 +93,11 @@
 	return [[self childNamed:@"Data"] childNamed:@"LevelName"];
 }
 
+- (NBTContainer *)worldGameModeContainer
+{
+	return [[self childNamed:@"Data"] childNamed:@"GameType"];
+}
+
 
 
 #pragma mark -
@@ -144,7 +149,7 @@
 {
 	NSString *path = [worldPath stringByAppendingPathComponent:@"session.lock"];
 	NSData *data = [NSData dataWithContentsOfFile:path];
-
+    
 	if (!data)
 	{
 		NSLog(@"Failed to read session lock at %@", path);

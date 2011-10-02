@@ -33,6 +33,10 @@ After changing your inventory you will need to save the currently open world usi
 
 ### Release Notes
 
+#### 1.0.10 - October 2, 2011
+
+- Added Game Mode selection.
+
 #### 1.0.9 - September 24, 2011
 
 - Added Minecraft 1.8 Items

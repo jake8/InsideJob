@@ -60,8 +60,11 @@
 @property (nonatomic, retain) IBOutlet IJInventoryView *quickView;
 @property (nonatomic, retain) IBOutlet IJInventoryView *armorView;
 
+@property (nonatomic, retain) IBOutlet NSSegmentedControl *gameModeSegmentedControl;
+
 @property (nonatomic, retain) NSNumber *worldTime;
 @property (nonatomic, retain) NSString *levelName;
+@property (nonatomic, retain) NSNumber *gameMode;
 @property (readonly) NSArray *inventory;
 
 
@@ -76,6 +79,7 @@
 - (IBAction)clearInventoryItems:(id)sender;
 - (IBAction)copyWorldSeed:(id)sender;
 - (IBAction)incrementTime:(id)sender;
+- (IBAction)changeGameMode:(id)sender;
 
 - (void)saveWorld;
 - (BOOL)loadWorldAtPath:(NSString *)path;

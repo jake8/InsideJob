@@ -19,6 +19,7 @@
 @implementation IJInventoryWindowController
 @synthesize inventory;
 @synthesize inventoryView, quickView, armorView;
+@synthesize gameModeSegmentedControl;
 @synthesize statusTextField;
 @synthesize contentView;
 
@@ -70,14 +71,14 @@
 		attemptedLoadWorldPath = [levelPath copy];
 		// Note: We use the didDismiss selector so that any subsequent alert sheets don't bugger up
 		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), @"Load", 
-																	 @"Your changes will be lost if you do not save them.");
+                          @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
 	
 	if (![IJMinecraftLevel worldExistsAtPath:levelPath])
 	{
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable to locate the level.dat file.");
+                                  @"Inside Job was unable to locate the level.dat file.");
 		return NO;
 	}	
 	
@@ -85,7 +86,7 @@
 	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue])
 	{
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable obtain the session lock.");
+                                  @"Inside Job was unable obtain the session lock.");
 		return NO;
 	}
 	
@@ -94,7 +95,7 @@
 	{
 		// Error loading 
 		NSBeginCriticalAlertSheet(@"Error loading world.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
+                                  @"InsideJob was unable to load the level.dat file at:/n%@", levelPath);
 		return NO;
 	}
 	
@@ -107,12 +108,14 @@
 	
 	[self willChangeValueForKey:@"worldTime"];
 	[self willChangeValueForKey:@"levelName"];
+    [self willChangeValueForKey:@"gameMode"];
 	
 	level = [[IJMinecraftLevel nbtContainerWithData:fileData] retain];
 	inventory = [[level inventory] retain];
 	
 	[self didChangeValueForKey:@"worldTime"];
 	[self didChangeValueForKey:@"levelName"];
+    [self didChangeValueForKey:@"gameMode"];
 	
 	// Overwrite the placeholders with actual inventory:
 	for (IJInventoryItem *item in inventory) {
@@ -135,16 +138,19 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-		
+    
+    [gameModeSegmentedControl setSelectedSegment:[self gameMode].integerValue];
+    
 	[self setDocumentEdited:NO];
 	statusTextField.stringValue = @"";
-
+    
 	[loadedWorldPath release];
 	loadedWorldPath = [levelPath copy];
 	[contentView selectTabViewItemAtIndex:1];
 	NSString *statusMessage = [NSString stringWithFormat:@"Loaded world: %@",[loadedWorldPath lastPathComponent]];
 	[statusTextField setStringValue:statusMessage];
 	[contentView selectTabViewItemAtIndex:1];
+    
 	return YES;
 }
 
@@ -156,10 +162,10 @@
 	
 	if (![IJMinecraftLevel checkSessionLockAtPath:levelPath value:sessionLockValue]) {
 		NSBeginCriticalAlertSheet(@"Another application has modified this world.", @"Reload", nil, nil, self.window, self, @selector(sessionLockAlertSheetDidEnd:returnCode:contextInfo:), nil, nil, 
-															@"The session lock was changed by another application.");
+                                  @"The session lock was changed by another application.");
 		return;
 	}
-		
+    
 	NSMutableArray *newInventory = [NSMutableArray array];
 	for (NSArray *items in [NSArray arrayWithObjects:armorInventory, quickInventory, normalInventory, nil]) {
 		for (IJInventoryItem *item in items) {
@@ -168,13 +174,13 @@
 				[item setCount:-1];
 			if (item.count > 64)
 				[item setCount:64];
-
+            
 			// Add item if it's valid
 			if ((item.count > 0 || item.count == -1) && item.itemId > 0)
 				[newInventory addObject:item];
 		}
 	}
-		
+    
 	[level setInventory:newInventory];
 	
 	NSString *dataPath = [IJMinecraftLevel levelDataPathForWorld:levelPath];
@@ -191,7 +197,7 @@
 		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to remove the prior backup of this level file.", [error localizedDescription]);
+                                      @"Inside Job was unable to remove the prior backup of this level file.", [error localizedDescription]);
 			return;
 		}
 	}
@@ -201,7 +207,7 @@
 	if (success != YES) {
 		NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [error localizedDescription]);
 		NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-															@"Inside Job was unable to create a backup of the existing level file.", [error localizedDescription]);
+                                  @"Inside Job was unable to create a backup of the existing level file.", [error localizedDescription]);
 		return;
 	}
 	
@@ -216,10 +222,10 @@
 		if (success != YES) {
 			NSLog(@"%s:%d %@", __PRETTY_FUNCTION__, __LINE__, [restoreError localizedDescription]);
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to save to the existing level file, and the backup could not be restored.", [error localizedDescription], [restoreError localizedDescription]);
+                                      @"Inside Job was unable to save to the existing level file, and the backup could not be restored.", [error localizedDescription], [restoreError localizedDescription]);
 		} else {
 			NSBeginCriticalAlertSheet(@"An error occurred while saving.", @"Dismiss", nil, nil, self.window, nil, nil, nil, nil, 
-																@"Inside Job was unable to save to the existing level file, and the backup was successfully restored.", [error localizedDescription]);
+                                      @"Inside Job was unable to save to the existing level file, and the backup was successfully restored.", [error localizedDescription]);
 		}
 		return;
 	}
@@ -281,19 +287,19 @@
 - (IBAction)openWorld:(id)sender
 {
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	 
-	 // Set up the panel
-	 [openPanel setCanChooseDirectories:YES];
-	 [openPanel setCanChooseFiles:NO];
-	 [openPanel setAllowsMultipleSelection:NO];
-	 
-	 // Display the NSOpenPanel
-	 [openPanel beginWithCompletionHandler:^(NSInteger runResult){
-		 if (runResult == NSFileHandlingPanelOKButton) {
-			 NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
-			 [self loadWorldAtPath:filePath];
-		 }
-	 }];
+    
+    // Set up the panel
+    [openPanel setCanChooseDirectories:YES];
+    [openPanel setCanChooseFiles:NO];
+    [openPanel setAllowsMultipleSelection:NO];
+    
+    // Display the NSOpenPanel
+    [openPanel beginWithCompletionHandler:^(NSInteger runResult){
+        if (runResult == NSFileHandlingPanelOKButton) {
+            NSString *filePath = [[[openPanel URLs] objectAtIndex:0] path]; 
+            [self loadWorldAtPath:filePath];
+        }
+    }];
 }
 
 - (IBAction)reloadWorldInformation:(id)sender
@@ -308,7 +314,7 @@
 	{
 		// Note: We use the didDismiss selector so that any subsequent alert sheets don't bugger up
 		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyOpenSheetDidEnd:returnCode:contextInfo:), @"Select", 
-																	 @"Your changes will be lost if you do not save them.");
+                          @"Your changes will be lost if you do not save them.");
 		return;
 	}
 	
@@ -363,6 +369,23 @@
 	}
 }
 
+- (NSNumber *)gameMode
+{
+    return [level worldGameModeContainer].numberValue;
+}
+
+- (void)setGameMode:(NSNumber *)gameMode
+{
+    [self willChangeValueForKey:@"gameMode"];
+	[level worldGameModeContainer].numberValue = gameMode;
+	[self didChangeValueForKey:@"gameMode"];
+	[self setDocumentEdited:YES];
+}
+
+- (IBAction)changeGameMode:(id)sender {
+    [self setGameMode:[NSNumber numberWithInt:[sender selectedSegment]]];
+}
+
 - (void)saveDocument:(id)sender
 {
 	[self saveWorld];
@@ -370,19 +393,19 @@
 
 - (void)delete:(id)sender
 {
-//	IJInventoryItem *item = [outlineView itemAtRow:[outlineView selectedRow]];
-//	item.count = 0;
-//	item.itemId = 0;
-//	item.damage = 0;
-//	[self setDocumentEdited:YES];
-//	[outlineView reloadItem:item];
+    //	IJInventoryItem *item = [outlineView itemAtRow:[outlineView selectedRow]];
+    //	item.count = 0;
+    //	item.itemId = 0;
+    //	item.damage = 0;
+    //	[self setDocumentEdited:YES];
+    //	[outlineView reloadItem:item];
 }
 
 - (BOOL)worldFolderContainsPath:(NSString *)path
 {
 	NSString *filePath = [path stringByStandardizingPath];
 	NSString *worldFolder = [[@"~/library/application support/minecraft/saves/" stringByExpandingTildeInPath] stringByStandardizingPath];
-		
+    
 	if (![[filePath stringByDeletingLastPathComponent] isEqualToString:worldFolder]) {
 		return YES;
 	}
@@ -513,7 +536,7 @@
 	
 	NSArray *items = [self itemArrayForInventoryView:theInventoryView slotOffset:nil];
 	IJInventoryItem *selectedItem = [items objectAtIndex:itemIndex];
-
+    
 	if (selectedItem.itemId == 0 || lastItem == selectedItem) {
 		// The window may not be invisible at this point,
 		// caused by the MAAttachedWindow not calling NSWindowDidResignKey
@@ -545,16 +568,16 @@
 																		queue:[NSOperationQueue mainQueue]
 																   usingBlock:^(NSNotification *notification) {
 																	   [propertiesViewController commitEditing];
-																		 // Validate item
+                                                                       // Validate item
 																	   if (selectedItem.count == 0)
 																		   selectedItem.itemId = 0;
-																		 if (selectedItem.count < -1)
-																			 selectedItem.count = -1;
-																		 if (selectedItem.count > 64)
-																			 selectedItem.count = 64;
-																		 if (selectedItem.damage < 0)
-																			 selectedItem.damage = 0;
-																		 
+                                                                       if (selectedItem.count < -1)
+                                                                           selectedItem.count = -1;
+                                                                       if (selectedItem.count > 64)
+                                                                           selectedItem.count = 64;
+                                                                       if (selectedItem.damage < 0)
+                                                                           selectedItem.damage = 0;
+                                                                       
 																	   [theInventoryView reloadItemAtIndex:itemIndex];
 																	   [propertiesWindow setAlphaValue:0.0];
 																   }];
@@ -579,7 +602,7 @@
 		[self setDocumentEdited:YES];
 	}	
 }
-	
+
 
 #pragma mark -
 #pragma mark Inventory
@@ -640,7 +663,7 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-
+    
 	for (IJInventoryItem *item in inventory) {
 		[item removeObserver:self forKeyPath:@"count"];
 		[item removeObserver:self forKeyPath:@"damage"];
@@ -667,7 +690,7 @@
 		// Add a KVO so that we can set the document as edited when the count or damage values are changed.
 		[item addObserver:self forKeyPath:@"count" options:0 context:@"KVO_COUNT_CHANGED"];
 		[item addObserver:self forKeyPath:@"damage" options:0 context:@"KVO_DAMAGE_CHANGED"];
-
+        
 		if (IJInventorySlotQuickFirst <= item.slot && item.slot <= IJInventorySlotQuickLast) {
 			[quickInventory replaceObjectAtIndex:item.slot - IJInventorySlotQuickFirst withObject:item];
 		}
@@ -682,7 +705,7 @@
 	[inventoryView setItems:normalInventory];
 	[quickView setItems:quickInventory];
 	[armorView setItems:armorInventory];
-		
+    
 	[self setDocumentEdited:YES];	
 }
 
@@ -714,7 +737,7 @@
 	[inventoryArray addObjectsFromArray:armorInventory];
 	[inventoryArray addObjectsFromArray:quickInventory];
 	[inventoryArray addObjectsFromArray:normalInventory];
-
+    
 	return inventoryArray;
 }
 
@@ -816,7 +839,7 @@
 			forType:IJPasteboardTypeInventoryItem];
 	
 	[item release];
-
+    
 	return YES;
 }
 
@@ -852,7 +875,7 @@
 	if ([self isDocumentEdited]) {
 		// Note: We use the didDismiss selector because the sheet needs to be closed in order for performClose: to work.
 		NSBeginAlertSheet(@"Do you want to save the changes you made in this world?", @"Save", @"Don't Save", @"Cancel", self.window, self, nil, @selector(dirtyCloseSheetDidDismiss:returnCode:contextInfo:), nil, 
-																	 @"Your changes will be lost if you do not save them.");
+                          @"Your changes will be lost if you do not save them.");
 		return NO;
 	}
 	
@@ -898,6 +921,7 @@
 	[armorInventory release];
 	[quickInventory release];
 	[normalInventory release];
+    [gameModeSegmentedControl release];
 	[inventory release];
 	[level release];
 	[super dealloc];
